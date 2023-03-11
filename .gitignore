@@ -1,3 +1,6 @@
-/OurProject/.idea/
+.idea/
+*.iml
+*.iws
 
-/OurProject/.gradle/
+.gradle/
+build/
