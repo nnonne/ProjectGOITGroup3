@@ -17,8 +17,8 @@ import static BotAPI.Keyboards.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
-    public static final String BOT_USER_NAME = "Grmavi_bot";
-    public static final String BOT_TOKEN = "6134878051:AAF7pkjwjk8AuOeAKCGF6PUyWbhGKHEG3lk";
+    public static final String BOT_USER_NAME = "MyFirstBot";
+    public static final String BOT_TOKEN = "6133175980:AAFbHhX-bfoael03v2Lyb6ys4A1UYt3Gh90";
 
     @Override
     public String getBotUsername() {
