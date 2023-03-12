@@ -1,17 +1,24 @@
 package BotAPI;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static BotAPI.Buttons.*;
 import static BotAPI.Keyboards.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
-    public static final String BOT_USER_NAME = "MyFirstBot";
-    public static final String BOT_TOKEN = "6133175980:AAFbHhX-bfoael03v2Lyb6ys4A1UYt3Gh90";
+    public static final String BOT_USER_NAME = "Grmavi_bot";
+    public static final String BOT_TOKEN = "6134878051:AAF7pkjwjk8AuOeAKCGF6PUyWbhGKHEG3lk";
 
     @Override
     public String getBotUsername() {
@@ -30,6 +37,8 @@ public class TelegramBot extends TelegramLongPollingBot {
             message.setChatId(update.getMessage().getChatId().toString());
             if (update.getMessage().getText().equals("/start")) {
                 message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
+                String messageText = update.getMessage().getText();
+                getUsetTGId(messageText, message.getChatId().toString());
 //                createDefaultKeyboard(message);  - вернуть строку, когда будет описан функционал кнопок и удалить 49 строку
                 createStartKeyboard(message);
             }
@@ -76,4 +85,35 @@ public class TelegramBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+    public void getUsetTGId(String messageText, String idUser ){
+        Map<String,String> base=new HashMap<>();
+        Gson gson=new GsonBuilder().setPrettyPrinting().create();
+        System.out.println("messageText = " + messageText);
+
+        if (messageText.equals("/start")){
+            System.out.println("messageText = " + messageText);
+            System.out.println("idUser = " + idUser);
+            base.put("idUser",idUser);
+            base.put("DecimalPoint","2");
+            base.put("Bank","Privat");
+            base.put("Currency-USD","Ok");
+            base.put("Currency-EUR","Ok");
+            base.put("HourOfAwakening","10");
+            FileWriter fileWriter;
+            try {
+                fileWriter = new FileWriter("userID.json.txt",true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            gson.toJson(base, fileWriter);
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+
+    }
+
 }

@@ -1,0 +1,8 @@
+{
+  "idUser": "726020982",
+  "Currency-EUR": "Ok",
+  "Bank": "Privat",
+  "HourOfAwakening": "10",
+  "DecimalPoint": "2",
+  "Currency-USD": "Ok"
+}
