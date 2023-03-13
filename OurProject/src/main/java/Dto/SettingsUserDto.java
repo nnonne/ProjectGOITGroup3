@@ -2,12 +2,14 @@ package Dto;
 
 import lombok.Data;
 
+import java.util.Currency;
+
 @Data
 
 public class SettingsUserDto {
     private String idUser;
     private BankName bankName;
-    private Currency currency;
+    private List<Currency> currency;
     private NotificationTime hourOfAwakening;
     private int decimalPoint;
 }
