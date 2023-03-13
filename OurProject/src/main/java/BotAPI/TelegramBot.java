@@ -52,11 +52,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
                 createDefaultKeyboard(message);
             }
-            if (update.getMessage().getText().equals(SETTINGS_BUTTON)) {
+            if (SETTINGS_BUTTON.equals(update.getMessage().getText())) {
                 message.setText(SETTINGS_BUTTON);
                 createSettingsKeyboard(message);
             }
-            if (update.getMessage().getText().equals(GET_INFO_BUTTON)) {
+            if (GET_INFO_BUTTON.equals(update.getMessage().getText())) {
                 // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
                 message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                 createStartKeyboard(message);
@@ -80,13 +80,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                     createDigitsKeyboard(message);
                     break;
                 case TWO_DIGITS_BUTTON:
-                    executeChangedMessage(placeCheckMark(TWO_DIGITS_BUTTON, update));
-                    break;
                 case THREE_DIGITS_BUTTON:
-                    executeChangedMessage(placeCheckMark(THREE_DIGITS_BUTTON, update));
-                    break;
                 case FOUR_DIGITS_BUTTON:
-                    executeChangedMessage(placeCheckMark(FOUR_DIGITS_BUTTON, update));
+                    executeChangedMessage(placeCheckMark(callBackData, update));
                     break;
                 case BANK_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Банк"
@@ -94,13 +90,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                     createBankKeyboard(message);
                     break;
                 case NBU_BUTTON:
-                    executeChangedMessage(placeCheckMark(NBU_BUTTON, update));
-                    break;
                 case PRIVATBANK_BUTTON:
-                    executeChangedMessage(placeCheckMark(PRIVATBANK_BUTTON, update));
-                    break;
                 case MONOBANK_BUTTON:
-                    executeChangedMessage(placeCheckMark(MONOBANK_BUTTON, update));
+                    executeChangedMessage(placeCheckMark(callBackData, update));
                     break;
                 case CURRENCY_RATE_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Валюти"

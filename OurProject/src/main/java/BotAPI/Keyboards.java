@@ -98,17 +98,17 @@ public class Keyboards {
         List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
-        if (callBackData.equals(TWO_DIGITS_BUTTON)) {
+        if (TWO_DIGITS_BUTTON.equals(callBackData)) {
             firstRowInLine = createButton("✅ " + TWO_DIGITS_BUTTON);
             secondRowInLine = createButton(THREE_DIGITS_BUTTON);
             thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
         }
-        if (callBackData.equals(THREE_DIGITS_BUTTON)) {
+        if (THREE_DIGITS_BUTTON.equals(callBackData)) {
             firstRowInLine = createButton(TWO_DIGITS_BUTTON);
             secondRowInLine = createButton("✅ " + THREE_DIGITS_BUTTON);
             thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
         }
-        if (callBackData.equals(FOUR_DIGITS_BUTTON)) {
+        if (FOUR_DIGITS_BUTTON.equals(callBackData)) {
             firstRowInLine = createButton(TWO_DIGITS_BUTTON);
             secondRowInLine = createButton(THREE_DIGITS_BUTTON);
             thirdRowInLine = createButton("✅ " + FOUR_DIGITS_BUTTON);
@@ -139,17 +139,17 @@ public class Keyboards {
         List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
-        if (callBackData.equals(NBU_BUTTON)) {
+        if (NBU_BUTTON.equals(callBackData)) {
             firstRowInLine = createButton("✅ " + NBU_BUTTON);
             secondRowInLine = createButton(PRIVATBANK_BUTTON);
             thirdRowInLine = createButton(MONOBANK_BUTTON);
         }
-        if (callBackData.equals(PRIVATBANK_BUTTON)) {
+        if (PRIVATBANK_BUTTON.equals(callBackData)) {
             firstRowInLine = createButton(NBU_BUTTON);
             secondRowInLine = createButton("✅ " + PRIVATBANK_BUTTON);
             thirdRowInLine = createButton(MONOBANK_BUTTON);
         }
-        if (callBackData.equals(MONOBANK_BUTTON)) {
+        if (MONOBANK_BUTTON.equals(callBackData)) {
             firstRowInLine = createButton(NBU_BUTTON);
             secondRowInLine = createButton(PRIVATBANK_BUTTON);
             thirdRowInLine = createButton("✅ " + MONOBANK_BUTTON);
@@ -187,10 +187,10 @@ public class Keyboards {
         newMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
         newMessage.setInlineMessageId(update.getCallbackQuery().getInlineMessageId());
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        if (callBackData.equals(NBU_BUTTON) || callBackData.equals(PRIVATBANK_BUTTON) || callBackData.equals(MONOBANK_BUTTON)) {
+        if (NBU_BUTTON.equals(callBackData) || PRIVATBANK_BUTTON.equals(callBackData) || MONOBANK_BUTTON.equals(callBackData)) {
             inlineKeyboardMarkup = changeBankKeyboard(callBackData);
         }
-        if (callBackData.equals(TWO_DIGITS_BUTTON) || callBackData.equals(THREE_DIGITS_BUTTON) || callBackData.equals(FOUR_DIGITS_BUTTON)) {
+        if (TWO_DIGITS_BUTTON.equals(callBackData) || THREE_DIGITS_BUTTON.equals(callBackData) || FOUR_DIGITS_BUTTON.equals(callBackData)) {
             inlineKeyboardMarkup = changeDigitsKeyboard(callBackData);
         }
         newMessage.setReplyMarkup(inlineKeyboardMarkup);
