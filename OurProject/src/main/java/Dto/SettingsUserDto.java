@@ -1,8 +1,7 @@
 package Dto;
 
 import lombok.Data;
-
-import java.util.Currency;
+import java.util.List;
 
 @Data
 
