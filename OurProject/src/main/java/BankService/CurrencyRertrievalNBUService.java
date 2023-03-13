@@ -20,7 +20,7 @@ public class CurrencyRertrievalNBUService implements CurrencyRertrievalService {
             List<CurrencyRateNBUResponseDto> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
                     .map(dto -> new CurrencyRateDto(BankName.NBU,dto.getR030(), dto.getRate()))
-                    .filter(dto -> dto.getCurrency() != Currency.UNKNOWN)
+                    .filter(dto ->  Currency.UNKNOWN != dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);

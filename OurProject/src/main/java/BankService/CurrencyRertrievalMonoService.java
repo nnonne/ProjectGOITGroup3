@@ -19,9 +19,9 @@ public class CurrencyRertrievalMonoService implements CurrencyRertrievalService 
             String response = Jsoup.connect(URL).ignoreContentType(true).get().body().text();
             List<CurrencyRateMonoResponseDto> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
-                    .filter(dto -> dto.getCurrencyCodeB() != 840)
+                    .filter(dto ->  840!=dto.getCurrencyCodeB() )
                     .map(dto -> new CurrencyRateDto(Enums.BankName.MONOBANK, dto.getCurrencyCodeA(), dto.getRateBuy(), dto.getRateSell()))
-                    .filter(dto -> dto.getCurrency() != Enums.Currency.UNKNOWN)
+                    .filter(dto ->  Enums.Currency.UNKNOWN !=dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);

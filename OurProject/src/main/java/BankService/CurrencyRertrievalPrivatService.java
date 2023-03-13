@@ -20,7 +20,7 @@ public class CurrencyRertrievalPrivatService implements CurrencyRertrievalServic
             List<CurrencyRatePrivatResponseDto> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
                     .map(dto -> new CurrencyRateDto(BankName.PRIVATBANK, dto.getCcy(), dto.getBuy(), dto.getSale()))
-                    .filter(dto -> dto.getCurrency() != Currency.UNKNOWN)
+                    .filter(dto ->  Currency.UNKNOWN!=dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
