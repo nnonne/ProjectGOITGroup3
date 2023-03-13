@@ -1,6 +1,8 @@
 package BotAPI;
 
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
+import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -16,8 +18,8 @@ public class Keyboards {
     public static void createStartKeyboard(SendMessage message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton("Отримати інфо", GET_INFO_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton("Налаштування", SETTINGS_BUTTON);
+        List<InlineKeyboardButton> firstRowInLine = createButton(GET_INFO_BUTTON);
+        List<InlineKeyboardButton> secondRowInLine = createButton(SETTINGS_BUTTON);
         rowsInLine.add(firstRowInLine);
         rowsInLine.add(secondRowInLine);
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
@@ -65,10 +67,10 @@ public class Keyboards {
     public static void createSettingsKeyboard(SendMessage message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton("К-сть знаків після коми", DIGITS_AFTER_DECIMAL_POINT_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton("Банк", BANK_BUTTON);
-        List<InlineKeyboardButton> thirdRowInLine = createButton("Валюти", CURRENCY_RATE_BUTTON);
-        List<InlineKeyboardButton> fourthRowInLine = createButton("Час сповіщень", NOTIFICATION_TIME_BUTTON);
+        List<InlineKeyboardButton> firstRowInLine = createButton(DIGITS_AFTER_DECIMAL_POINT_BUTTON);
+        List<InlineKeyboardButton> secondRowInLine = createButton(BANK_BUTTON);
+        List<InlineKeyboardButton> thirdRowInLine = createButton(CURRENCY_RATE_BUTTON);
+        List<InlineKeyboardButton> fourthRowInLine = createButton(NOTIFICATION_TIME_BUTTON);
         rowsInLine.add(firstRowInLine);
         rowsInLine.add(secondRowInLine);
         rowsInLine.add(thirdRowInLine);
@@ -80,22 +82,50 @@ public class Keyboards {
     public static void createDigitsKeyboard(SendMessage message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton("2", TWO_DIGITS_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton("3", THREE_DIGITS_BUTTON);
-        List<InlineKeyboardButton> thirdRowInLine = createButton("4", FOUR_DIGITS_BUTTON);
+        List<InlineKeyboardButton> firstRowInLine = createButton(TWO_DIGITS_BUTTON);
+        List<InlineKeyboardButton> secondRowInLine = createButton(THREE_DIGITS_BUTTON);
+        List<InlineKeyboardButton> thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
         rowsInLine.add(firstRowInLine);
         rowsInLine.add(secondRowInLine);
         rowsInLine.add(thirdRowInLine);
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
         message.setReplyMarkup(inlineKeyboardMarkup);
+    }
+
+    public static InlineKeyboardMarkup changeDigitsKeyboard(String callBackData) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
+        List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
+        List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
+        if (callBackData.equals(TWO_DIGITS_BUTTON)) {
+            firstRowInLine = createButton("✅ " + TWO_DIGITS_BUTTON);
+            secondRowInLine = createButton(THREE_DIGITS_BUTTON);
+            thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
+        }
+        if (callBackData.equals(THREE_DIGITS_BUTTON)) {
+            firstRowInLine = createButton(TWO_DIGITS_BUTTON);
+            secondRowInLine = createButton("✅ " + THREE_DIGITS_BUTTON);
+            thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
+        }
+        if (callBackData.equals(FOUR_DIGITS_BUTTON)) {
+            firstRowInLine = createButton(TWO_DIGITS_BUTTON);
+            secondRowInLine = createButton(THREE_DIGITS_BUTTON);
+            thirdRowInLine = createButton("✅ " + FOUR_DIGITS_BUTTON);
+        }
+        rowsInLine.add(firstRowInLine);
+        rowsInLine.add(secondRowInLine);
+        rowsInLine.add(thirdRowInLine);
+        inlineKeyboardMarkup.setKeyboard(rowsInLine);
+        return inlineKeyboardMarkup;
     }
 
     public static void createBankKeyboard(SendMessage message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton("НБУ", NBU_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton("ПриватБанк", PRIVATBANK_BUTTON);
-        List<InlineKeyboardButton> thirdRowInLine = createButton("Монобанк", MONOBANK_BUTTON);
+        List<InlineKeyboardButton> firstRowInLine = createButton(NBU_BUTTON);
+        List<InlineKeyboardButton> secondRowInLine = createButton(PRIVATBANK_BUTTON);
+        List<InlineKeyboardButton> thirdRowInLine = createButton(MONOBANK_BUTTON);
         rowsInLine.add(firstRowInLine);
         rowsInLine.add(secondRowInLine);
         rowsInLine.add(thirdRowInLine);
@@ -103,23 +133,67 @@ public class Keyboards {
         message.setReplyMarkup(inlineKeyboardMarkup);
     }
 
+    public static InlineKeyboardMarkup changeBankKeyboard(String callBackData) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
+        List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
+        List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
+        if (callBackData.equals(NBU_BUTTON)) {
+            firstRowInLine = createButton("✅ " + NBU_BUTTON);
+            secondRowInLine = createButton(PRIVATBANK_BUTTON);
+            thirdRowInLine = createButton(MONOBANK_BUTTON);
+        }
+        if (callBackData.equals(PRIVATBANK_BUTTON)) {
+            firstRowInLine = createButton(NBU_BUTTON);
+            secondRowInLine = createButton("✅ " + PRIVATBANK_BUTTON);
+            thirdRowInLine = createButton(MONOBANK_BUTTON);
+        }
+        if (callBackData.equals(MONOBANK_BUTTON)) {
+            firstRowInLine = createButton(NBU_BUTTON);
+            secondRowInLine = createButton(PRIVATBANK_BUTTON);
+            thirdRowInLine = createButton("✅ " + MONOBANK_BUTTON);
+        }
+        rowsInLine.add(firstRowInLine);
+        rowsInLine.add(secondRowInLine);
+        rowsInLine.add(thirdRowInLine);
+        inlineKeyboardMarkup.setKeyboard(rowsInLine);
+        return inlineKeyboardMarkup;
+    }
+
     public static void createCurrencyKeyboard(SendMessage message) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton("USD", USD_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton("EUR", EUR_BUTTON);
+        List<InlineKeyboardButton> firstRowInLine = createButton(USD_BUTTON);
+        List<InlineKeyboardButton> secondRowInLine = createButton(EUR_BUTTON);
         rowsInLine.add(firstRowInLine);
         rowsInLine.add(secondRowInLine);
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
         message.setReplyMarkup(inlineKeyboardMarkup);
     }
 
-    public static List<InlineKeyboardButton> createButton(String text, String buttonName) {
+    public static List<InlineKeyboardButton> createButton(String buttonName) {
         List<InlineKeyboardButton> inlineKeyboardButtons = new ArrayList<>();
         InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-        inlineKeyboardButton.setText(text);
+        inlineKeyboardButton.setText(buttonName);
         inlineKeyboardButton.setCallbackData(buttonName);
         inlineKeyboardButtons.add(inlineKeyboardButton);
         return inlineKeyboardButtons;
+    }
+
+    public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update) {
+        EditMessageReplyMarkup newMessage = new EditMessageReplyMarkup();
+        newMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
+        newMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
+        newMessage.setInlineMessageId(update.getCallbackQuery().getInlineMessageId());
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        if (callBackData.equals(NBU_BUTTON) || callBackData.equals(PRIVATBANK_BUTTON) || callBackData.equals(MONOBANK_BUTTON)) {
+            inlineKeyboardMarkup = changeBankKeyboard(callBackData);
+        }
+        if (callBackData.equals(TWO_DIGITS_BUTTON) || callBackData.equals(THREE_DIGITS_BUTTON) || callBackData.equals(FOUR_DIGITS_BUTTON)) {
+            inlineKeyboardMarkup = changeDigitsKeyboard(callBackData);
+        }
+        newMessage.setReplyMarkup(inlineKeyboardMarkup);
+        return newMessage;
     }
 }

@@ -2,6 +2,7 @@ package BotAPI;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -51,11 +52,11 @@ public class TelegramBot extends TelegramLongPollingBot {
                 message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
                 createDefaultKeyboard(message);
             }
-            if (update.getMessage().getText().equals("Налаштування")) {
-                message.setText("Налаштування");
+            if (update.getMessage().getText().equals(SETTINGS_BUTTON)) {
+                message.setText(SETTINGS_BUTTON);
                 createSettingsKeyboard(message);
             }
-            if (update.getMessage().getText().equals("Отримати інфо")) {
+            if (update.getMessage().getText().equals(GET_INFO_BUTTON)) {
                 // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
                 message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                 createStartKeyboard(message);
@@ -70,22 +71,40 @@ public class TelegramBot extends TelegramLongPollingBot {
                     createStartKeyboard(message);
                     break;
                 case SETTINGS_BUTTON:
-                    message.setText("Налаштування");
+                    message.setText(SETTINGS_BUTTON);
                     createSettingsKeyboard(message);
                     break;
                 case DIGITS_AFTER_DECIMAL_POINT_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "К-сть знаків після коми"
-                    message.setText("К-сть знаків після коми");
+                    message.setText(DIGITS_AFTER_DECIMAL_POINT_BUTTON);
                     createDigitsKeyboard(message);
+                    break;
+                case TWO_DIGITS_BUTTON:
+                    executeChangedMessage(placeCheckMark(TWO_DIGITS_BUTTON, update));
+                    break;
+                case THREE_DIGITS_BUTTON:
+                    executeChangedMessage(placeCheckMark(THREE_DIGITS_BUTTON, update));
+                    break;
+                case FOUR_DIGITS_BUTTON:
+                    executeChangedMessage(placeCheckMark(FOUR_DIGITS_BUTTON, update));
                     break;
                 case BANK_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Банк"
-                    message.setText("Банк");
+                    message.setText(BANK_BUTTON);
                     createBankKeyboard(message);
+                    break;
+                case NBU_BUTTON:
+                    executeChangedMessage(placeCheckMark(NBU_BUTTON, update));
+                    break;
+                case PRIVATBANK_BUTTON:
+                    executeChangedMessage(placeCheckMark(PRIVATBANK_BUTTON, update));
+                    break;
+                case MONOBANK_BUTTON:
+                    executeChangedMessage(placeCheckMark(MONOBANK_BUTTON, update));
                     break;
                 case CURRENCY_RATE_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Валюти"
-                    message.setText("Валюти");
+                    message.setText(CURRENCY_RATE_BUTTON);
                     createCurrencyKeyboard(message);
                     break;
                 case NOTIFICATION_TIME_BUTTON:
@@ -99,6 +118,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             execute(message);
         } catch (
                 TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void executeChangedMessage (EditMessageReplyMarkup editMessageReplyMarkup) {
+        try {
+            execute(editMessageReplyMarkup);
+
+        } catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }
