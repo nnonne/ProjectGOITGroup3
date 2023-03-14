@@ -10,5 +10,5 @@ public class SettingsUserDto {
     private BankName bankName;
     private List<Currency> currency;
     private NotificationTime hourOfAwakening;
-    private int decimalPoint;
+    private DigitsAfterDecimalPoint decimalPoint;
 }
