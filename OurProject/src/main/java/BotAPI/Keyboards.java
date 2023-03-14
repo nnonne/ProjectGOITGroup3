@@ -32,6 +32,7 @@ public class Keyboards {
         row.add("Налаштування");
         keyboardRows.add(row);
         replyKeyboardMarkup.setKeyboard(keyboardRows);
+        replyKeyboardMarkup.setResizeKeyboard(true);
         message.setReplyMarkup(replyKeyboardMarkup);
     }
 

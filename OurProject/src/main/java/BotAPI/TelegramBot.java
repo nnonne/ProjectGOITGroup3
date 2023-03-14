@@ -5,22 +5,41 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Properties;
+
 import static BotAPI.Buttons.*;
 import static BotAPI.Keyboards.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
-    public static final String BOT_USER_NAME = "MyFirstBot";
-    public static final String BOT_TOKEN = "6133175980:AAFbHhX-bfoael03v2Lyb6ys4A1UYt3Gh90";
+    Properties property = new Properties();
+    public static final String FILE_NAME = "./src/main/resources/botsettings.properties";
 
     @Override
     public String getBotUsername() {
-        return BOT_USER_NAME;  // для поиска в приложении используем @myowntelegrambot_bot, можно заменить название
+        String botName;
+        try (Reader reader = new FileReader(FILE_NAME)){
+            property.load(reader);
+            botName = property.getProperty("bot.name");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return botName;
     }
 
     @Override
     public String getBotToken() {
-        return BOT_TOKEN; //нужно заменить токен, если будем менять имя бота
+        String token;
+        try (Reader reader = new FileReader(FILE_NAME)){
+            property.load(reader);
+            token = property.getProperty("bot.token");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return token;
     }
 
     @Override
@@ -30,7 +49,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             message.setChatId(update.getMessage().getChatId().toString());
             if (update.getMessage().getText().equals("/start")) {
                 message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
-//                createDefaultKeyboard(message);  - вернуть строку, когда будет описан функционал кнопок и удалить 49 строку
+                createDefaultKeyboard(message);
+            }
+            if (update.getMessage().getText().equals("Налаштування")) {
+                message.setText("Налаштування");
+                createSettingsKeyboard(message);
+            }
+            if (update.getMessage().getText().equals("Отримати інфо")) {
+                // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
+                message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                 createStartKeyboard(message);
             }
         } else if (update.hasCallbackQuery()) {
@@ -39,11 +66,10 @@ public class TelegramBot extends TelegramLongPollingBot {
             switch (callBackData) {
                 case GET_INFO_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
-                    message.setText("Отримуэмо інфо по курсу валют");
+                    message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                     createStartKeyboard(message);
                     break;
                 case SETTINGS_BUTTON:
-                    // прописываем метод который вызываеться при нажатии кнопки "Налаштування"
                     message.setText("Налаштування");
                     createSettingsKeyboard(message);
                     break;
