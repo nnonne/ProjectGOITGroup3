@@ -1,4 +1,4 @@
-package BotFunctions;
+package BotAPI;
 
 import org.apache.http.ParseException;
 import org.json.JSONObject;
@@ -8,25 +8,25 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.util.List;
 
-public class updateUserSettings {
-    private void updateUserSettings(String idUser, String fieldName, String value) throws IOException, ParseException, org.json.simple.parser.ParseException {
+public class UpdateUserSettings {
+    public void updateUsersSettings(String idUser, String fieldName, String value) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
-        Object obj = new JSONParser().parse(new FileReader("settings.json"));
+        Object obj = new JSONParser().parse(new FileReader("userID.json"));
         JSONObject jsonObject = (JSONObject) obj;
         JSONObject userSettings = (JSONObject) jsonObject.get(idUser);
 
         switch (fieldName) {
-            case "Bank":
-                userSettings.remove("Bank");
-                userSettings.put("Bank", value);
+            case "BankNames":
+                userSettings.remove("BankNames");
+                userSettings.put("BankNames", value);
                 break;
             case "Currency":
                 String oldValue = (String) userSettings.get("Currency");
                 userSettings.put("Currency", /*oldValue + ", " + value*/ List.of(oldValue, value));
                 break;
-            case "Decimal":
-                userSettings.remove("Decimal");
-                userSettings.put("Decimal", value);
+            case "DigitsAfterDecimalPoint":
+                userSettings.remove("DigitsAfterDecimalPoint");
+                userSettings.put("DigitsAfterDecimalPoint", value);
                 break;
             case "NotificationTime":
                 userSettings.remove("NotificationTime");
@@ -36,7 +36,7 @@ public class updateUserSettings {
                 throw new IllegalArgumentException("Невірна назва поля: " + fieldName);
         }
 
-        try (FileWriter file = new FileWriter("user" + idUser + ".json")) {
+        try (FileWriter file = new FileWriter("userID.json")) {
             JSONWriter jsonWriter = new JSONWriter(file);
             jsonWriter.object();
             for (Object key : jsonObject.keySet()) {

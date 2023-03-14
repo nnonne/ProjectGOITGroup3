@@ -1,0 +1,20 @@
+{
+  "idUser": {
+    "value1": "123"
+  },
+  "Currency": {
+    "value1": "USD",
+    "value2": "EUR"
+  },
+  "NotificationTime": {
+    "value1": "TEN"
+  },
+  "DigitsAfterDecimalPoint": {
+    "value1": "TWO"
+  },
+  "BankNames": {
+    "value1": "PRIVATBANK",
+    "value2": "MONOBANK",
+    "value3": "NBU"
+  }
+}
