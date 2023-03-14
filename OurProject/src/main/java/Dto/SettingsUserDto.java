@@ -1,5 +1,9 @@
 package Dto;
 
+import Enums.BankName;
+import Enums.Currency;
+import Enums.DigitsAfterDecimalPoint;
+import Enums.NotificationTime;
 import lombok.Data;
 import java.util.List;
 

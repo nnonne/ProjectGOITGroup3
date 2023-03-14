@@ -1,5 +1,6 @@
 package BotAPI;
 
+import Dto.SettingsUserDto;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
@@ -18,6 +19,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     Properties property = new Properties();
     public static final String FILE_NAME = "./src/main/resources/botsettings.properties";
+    SettingsUserDto settingsUserDto;
 
     @Override
     public String getBotUsername() {
@@ -47,8 +49,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         SendMessage message = new SendMessage();
         if (update.hasMessage() && update.getMessage().hasText()) {
-            message.setChatId(update.getMessage().getChatId().toString());
-            if (update.getMessage().getText().equals("/start")) {
+            String userID = update.getMessage().getChatId().toString();
+            String messageText = update.getMessage().getText();
+            message.setChatId(userID);
+            if (messageText.equals("/start")) {
+                new GetUser().getUsetTGId(messageText, userID);
                 message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
                 createDefaultKeyboard(message);
             }
@@ -58,12 +63,15 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             if (GET_INFO_BUTTON.equals(update.getMessage().getText())) {
                 // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
+//                settingsUserDto = findUser(userID);
                 message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                 createStartKeyboard(message);
             }
         } else if (update.hasCallbackQuery()) {
             String callBackData = update.getCallbackQuery().getData();
-            message.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
+            String userID = update.getCallbackQuery().getMessage().getChatId().toString();
+            message.setChatId(userID);
+//            settingsUserDto = findUser(userID);
             switch (callBackData) {
                 case GET_INFO_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
@@ -77,27 +85,29 @@ public class TelegramBot extends TelegramLongPollingBot {
                 case DIGITS_AFTER_DECIMAL_POINT_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "К-сть знаків після коми"
                     message.setText(DIGITS_AFTER_DECIMAL_POINT_BUTTON);
-                    createDigitsKeyboard(message);
+                    message.setReplyMarkup(createDigitsKeyboard(settingsUserDto));
                     break;
                 case TWO_DIGITS_BUTTON:
                 case THREE_DIGITS_BUTTON:
                 case FOUR_DIGITS_BUTTON:
-                    executeChangedMessage(placeCheckMark(callBackData, update));
+                case NBU_BUTTON:
+                case PRIVATBANK_BUTTON:
+                case MONOBANK_BUTTON:
+                case USD_BUTTON:
+                case EUR_BUTTON:
+                case "✅ " + EUR_BUTTON:
+                case "✅ " + USD_BUTTON:
+                    executeChangedMessage(placeCheckMark(callBackData, update, settingsUserDto));
                     break;
                 case BANK_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Банк"
                     message.setText(BANK_BUTTON);
-                    createBankKeyboard(message);
-                    break;
-                case NBU_BUTTON:
-                case PRIVATBANK_BUTTON:
-                case MONOBANK_BUTTON:
-                    executeChangedMessage(placeCheckMark(callBackData, update));
+                    message.setReplyMarkup(createBankKeyboard(settingsUserDto));
                     break;
                 case CURRENCY_RATE_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Валюти"
                     message.setText(CURRENCY_RATE_BUTTON);
-                    createCurrencyKeyboard(message);
+                    createCurrencyKeyboard(message, settingsUserDto);
                     break;
                 case NOTIFICATION_TIME_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Оберіть час сповіщення"

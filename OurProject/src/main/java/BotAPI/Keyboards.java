@@ -1,5 +1,6 @@
 package BotAPI;
 
+import Dto.SettingsUserDto;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -79,36 +80,23 @@ public class Keyboards {
         message.setReplyMarkup(inlineKeyboardMarkup);
     }
 
-    public static void createDigitsKeyboard(SendMessage message) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton(TWO_DIGITS_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton(THREE_DIGITS_BUTTON);
-        List<InlineKeyboardButton> thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
-        rowsInLine.add(firstRowInLine);
-        rowsInLine.add(secondRowInLine);
-        rowsInLine.add(thirdRowInLine);
-        inlineKeyboardMarkup.setKeyboard(rowsInLine);
-        message.setReplyMarkup(inlineKeyboardMarkup);
-    }
-
-    public static InlineKeyboardMarkup changeDigitsKeyboard(String callBackData) {
+    public static InlineKeyboardMarkup createDigitsKeyboard(SettingsUserDto settingsUserDto) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
-        if (TWO_DIGITS_BUTTON.equals(callBackData)) {
+        if (TWO_DIGITS_BUTTON.equals(settingsUserDto.getDecimalPoint().name())) {
             firstRowInLine = createButton("✅ " + TWO_DIGITS_BUTTON);
             secondRowInLine = createButton(THREE_DIGITS_BUTTON);
             thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
         }
-        if (THREE_DIGITS_BUTTON.equals(callBackData)) {
+        if (THREE_DIGITS_BUTTON.equals(settingsUserDto.getDecimalPoint().name())) {
             firstRowInLine = createButton(TWO_DIGITS_BUTTON);
             secondRowInLine = createButton("✅ " + THREE_DIGITS_BUTTON);
             thirdRowInLine = createButton(FOUR_DIGITS_BUTTON);
         }
-        if (FOUR_DIGITS_BUTTON.equals(callBackData)) {
+        if (FOUR_DIGITS_BUTTON.equals(settingsUserDto.getDecimalPoint().name())) {
             firstRowInLine = createButton(TWO_DIGITS_BUTTON);
             secondRowInLine = createButton(THREE_DIGITS_BUTTON);
             thirdRowInLine = createButton("✅ " + FOUR_DIGITS_BUTTON);
@@ -120,36 +108,23 @@ public class Keyboards {
         return inlineKeyboardMarkup;
     }
 
-    public static void createBankKeyboard(SendMessage message) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton(NBU_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton(PRIVATBANK_BUTTON);
-        List<InlineKeyboardButton> thirdRowInLine = createButton(MONOBANK_BUTTON);
-        rowsInLine.add(firstRowInLine);
-        rowsInLine.add(secondRowInLine);
-        rowsInLine.add(thirdRowInLine);
-        inlineKeyboardMarkup.setKeyboard(rowsInLine);
-        message.setReplyMarkup(inlineKeyboardMarkup);
-    }
-
-    public static InlineKeyboardMarkup changeBankKeyboard(String callBackData) {
+    public static InlineKeyboardMarkup createBankKeyboard(SettingsUserDto settingsUserDto) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
         List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
-        if (NBU_BUTTON.equals(callBackData)) {
+        if (NBU_BUTTON.equals(settingsUserDto.getBankName().name())) {
             firstRowInLine = createButton("✅ " + NBU_BUTTON);
             secondRowInLine = createButton(PRIVATBANK_BUTTON);
             thirdRowInLine = createButton(MONOBANK_BUTTON);
         }
-        if (PRIVATBANK_BUTTON.equals(callBackData)) {
+        if (PRIVATBANK_BUTTON.equals(settingsUserDto.getBankName().name())) {
             firstRowInLine = createButton(NBU_BUTTON);
             secondRowInLine = createButton("✅ " + PRIVATBANK_BUTTON);
             thirdRowInLine = createButton(MONOBANK_BUTTON);
         }
-        if (MONOBANK_BUTTON.equals(callBackData)) {
+        if (MONOBANK_BUTTON.equals(settingsUserDto.getBankName().name())) {
             firstRowInLine = createButton(NBU_BUTTON);
             secondRowInLine = createButton(PRIVATBANK_BUTTON);
             thirdRowInLine = createButton("✅ " + MONOBANK_BUTTON);
@@ -161,15 +136,72 @@ public class Keyboards {
         return inlineKeyboardMarkup;
     }
 
-    public static void createCurrencyKeyboard(SendMessage message) {
+    public static void createCurrencyKeyboard(SendMessage message, SettingsUserDto settingsUserDto) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
-        List<InlineKeyboardButton> firstRowInLine = createButton(USD_BUTTON);
-        List<InlineKeyboardButton> secondRowInLine = createButton(EUR_BUTTON);
+        List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
+        List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
+        String selectedCurrency = settingsUserDto.getCurrency().get(0).name();
+        if (settingsUserDto.getCurrency().size() == 1) {
+            if (USD_BUTTON.equals(selectedCurrency)) {
+                firstRowInLine = createButton("✅ " + USD_BUTTON);
+                secondRowInLine = createButton(EUR_BUTTON);
+            }
+            if (EUR_BUTTON.equals(selectedCurrency)) {
+                firstRowInLine = createButton(USD_BUTTON);
+                secondRowInLine = createButton("✅ " + EUR_BUTTON);
+            }
+        }
+        if (settingsUserDto.getCurrency().size() == 2) {
+            firstRowInLine = createButton("✅ " + USD_BUTTON);
+            secondRowInLine = createButton("✅ " + EUR_BUTTON);
+        }
         rowsInLine.add(firstRowInLine);
         rowsInLine.add(secondRowInLine);
         inlineKeyboardMarkup.setKeyboard(rowsInLine);
         message.setReplyMarkup(inlineKeyboardMarkup);
+    }
+
+    public static InlineKeyboardMarkup changeCurrencyKeyboard(String callBackData, SettingsUserDto settingsUserDto) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> rowsInLine = new ArrayList<>();
+        List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
+        List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
+        if (settingsUserDto.getCurrency().size() == 1) {
+            if (("✅ " + USD_BUTTON).equals(callBackData) || EUR_BUTTON.equals(callBackData)) {
+                firstRowInLine = createButton(USD_BUTTON);
+                secondRowInLine = createButton("✅ " + EUR_BUTTON);
+//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", USD_BUTTON);
+//                updateUserSettings(settingsUserDto.getIdUser(), "Currency", EUR_BUTTON);
+            }
+            if (USD_BUTTON.equals(callBackData) || ("✅ " + EUR_BUTTON).equals(callBackData)) {
+                firstRowInLine = createButton("✅ " + USD_BUTTON);
+                secondRowInLine = createButton(EUR_BUTTON);
+//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", EUR_BUTTON);
+//                updateUserSettings(settingsUserDto.getIdUser(), "Currency", USD_BUTTON);
+            }
+            if (USD_BUTTON.equals(callBackData) || EUR_BUTTON.equals(callBackData)) {
+                firstRowInLine = createButton("✅ " + USD_BUTTON);
+                secondRowInLine = createButton("✅ " + EUR_BUTTON);
+//                updateUserSettings(settingsUserDto.getIdUser(), "Currency", callBackData);
+            }
+        }
+        if (settingsUserDto.getCurrency().size() == 2) {
+            if (("✅ " + EUR_BUTTON).equals(callBackData)) {
+                firstRowInLine = createButton("✅ " + USD_BUTTON);
+                secondRowInLine = createButton(EUR_BUTTON);
+//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", EUR_BUTTON);
+            }
+            if (("✅ " + USD_BUTTON).equals(callBackData)) {
+                firstRowInLine = createButton(USD_BUTTON);
+                secondRowInLine = createButton("✅ " + EUR_BUTTON);
+//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", USD_BUTTON);
+            }
+        }
+        rowsInLine.add(firstRowInLine);
+        rowsInLine.add(secondRowInLine);
+        inlineKeyboardMarkup.setKeyboard(rowsInLine);
+        return inlineKeyboardMarkup;
     }
 
     public static List<InlineKeyboardButton> createButton(String buttonName) {
@@ -181,17 +213,22 @@ public class Keyboards {
         return inlineKeyboardButtons;
     }
 
-    public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update) {
+    public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update, SettingsUserDto settingsUserDto) {
         EditMessageReplyMarkup newMessage = new EditMessageReplyMarkup();
         newMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
         newMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
         newMessage.setInlineMessageId(update.getCallbackQuery().getInlineMessageId());
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         if (NBU_BUTTON.equals(callBackData) || PRIVATBANK_BUTTON.equals(callBackData) || MONOBANK_BUTTON.equals(callBackData)) {
-            inlineKeyboardMarkup = changeBankKeyboard(callBackData);
+//            updateUserSettings(settingsUserDto.getIdUser(), "Bank", callBackData);
+            inlineKeyboardMarkup = createBankKeyboard(settingsUserDto);
         }
         if (TWO_DIGITS_BUTTON.equals(callBackData) || THREE_DIGITS_BUTTON.equals(callBackData) || FOUR_DIGITS_BUTTON.equals(callBackData)) {
-            inlineKeyboardMarkup = changeDigitsKeyboard(callBackData);
+//            updateUserSettings(settingsUserDto.getIdUser(), "Decimal", callBackData);
+            inlineKeyboardMarkup = createDigitsKeyboard(settingsUserDto);
+        }
+        if (USD_BUTTON.equals(callBackData) || EUR_BUTTON.equals(callBackData) || ("✅ " + USD_BUTTON).equals(callBackData) || ("✅ " + EUR_BUTTON).equals(callBackData)) {
+            inlineKeyboardMarkup = changeCurrencyKeyboard(callBackData, settingsUserDto);
         }
         newMessage.setReplyMarkup(inlineKeyboardMarkup);
         return newMessage;
