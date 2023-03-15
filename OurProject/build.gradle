@@ -23,6 +23,8 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 
+    implementation 'org.json:json:20171018'
+
     testCompileOnly 'org.projectlombok:lombok:1.18.26'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 
