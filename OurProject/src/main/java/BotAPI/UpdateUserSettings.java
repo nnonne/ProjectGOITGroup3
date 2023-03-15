@@ -11,7 +11,7 @@ import java.util.List;
 public class UpdateUserSettings {
     public void updateUsersSettings(String idUser, String fieldName, String value) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
-        Object obj = new JSONParser().parse(new FileReader("userID.json"));
+        Object obj = new JSONParser().parse(new FileReader("users.json"));
         JSONObject jsonObject = (JSONObject) obj;
         JSONObject userSettings = (JSONObject) jsonObject.get(idUser);
 
@@ -36,7 +36,7 @@ public class UpdateUserSettings {
                 throw new IllegalArgumentException("Невірна назва поля: " + fieldName);
         }
 
-        try (FileWriter file = new FileWriter("userID.json")) {
+        try (FileWriter file = new FileWriter("users.json")) {
             JSONWriter jsonWriter = new JSONWriter(file);
             jsonWriter.object();
             for (Object key : jsonObject.keySet()) {
