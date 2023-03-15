@@ -57,7 +57,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             }
             if (update.getMessage().getText().equals("Отримати інфо")) {
                 // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
-                message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
+                message.setText("Отримуємо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                 createStartKeyboard(message);
             }
         } else if (update.hasCallbackQuery()) {
@@ -66,7 +66,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             switch (callBackData) {
                 case GET_INFO_BUTTON:
                     // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
-                    message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
+                    message.setText("Отримуємо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                     createStartKeyboard(message);
                     break;
                 case SETTINGS_BUTTON:

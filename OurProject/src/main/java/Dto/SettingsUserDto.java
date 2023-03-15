@@ -1,6 +1,8 @@
 package Dto;
 
 import lombok.Data;
+import Enums.*;
+
 import java.util.List;
 
 @Data
