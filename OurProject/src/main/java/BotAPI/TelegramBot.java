@@ -1,6 +1,7 @@
 package BotAPI;
 
 import Dto.SettingsUserDto;
+import Enums.NotificationTime;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
@@ -24,7 +25,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotUsername() {
         String botName;
-        try (Reader reader = new FileReader(FILE_NAME)){
+        try (Reader reader = new FileReader(FILE_NAME)) {
             property.load(reader);
             botName = property.getProperty("bot.name");
         } catch (IOException e) {
@@ -36,7 +37,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         String token;
-        try (Reader reader = new FileReader(FILE_NAME)){
+        try (Reader reader = new FileReader(FILE_NAME)) {
             property.load(reader);
             token = property.getProperty("bot.token");
         } catch (IOException e) {
@@ -52,20 +53,25 @@ public class TelegramBot extends TelegramLongPollingBot {
             String userID = update.getMessage().getChatId().toString();
             String messageText = update.getMessage().getText();
             message.setChatId(userID);
+            new GetUser().getUsetTGId(messageText, userID);
+            //                settingsUserDto = findUser(userID);
+            String notificationTime = NotificationTime.valueOf(settingsUserDto.getHourOfAwakening().name()).toString();
             if (messageText.equals("/start")) {
-                new GetUser().getUsetTGId(messageText, userID);
                 message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
                 createDefaultKeyboard(message);
             }
-            if (SETTINGS_BUTTON.equals(update.getMessage().getText())) {
+            if (SETTINGS_BUTTON.equals(messageText)) {
                 message.setText(SETTINGS_BUTTON);
                 createSettingsKeyboard(message);
             }
-            if (GET_INFO_BUTTON.equals(update.getMessage().getText())) {
+            if (GET_INFO_BUTTON.equals(messageText)) {
                 // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
-//                settingsUserDto = findUser(userID);
                 message.setText("Отримуэмо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
                 createStartKeyboard(message);
+            }
+            if (notificationTime.equals(messageText)){
+//                updateUserSettings (userID, "notificationTime", notificationTime);
+                message.setText("Обраний час сповіщень: " + notificationTime);
             }
         } else if (update.hasCallbackQuery()) {
             String callBackData = update.getCallbackQuery().getData();
@@ -110,9 +116,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                     createCurrencyKeyboard(message, settingsUserDto);
                     break;
                 case NOTIFICATION_TIME_BUTTON:
-                    // прописываем метод который вызываеться при нажатии кнопки "Оберіть час сповіщення"
-                    message.setText("Оберіть час сповіщення");
-                    createNotificationTimeKeyboard(message);
+                    sendInfoAboutNotificationTime(message);
                     break;
             }
         }
@@ -124,12 +128,26 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
-    public void executeChangedMessage (EditMessageReplyMarkup editMessageReplyMarkup) {
+    public void executeChangedMessage(EditMessageReplyMarkup editMessageReplyMarkup) {
         try {
             execute(editMessageReplyMarkup);
 
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendInfoAboutNotificationTime(SendMessage message) {
+        String notificationTime = NotificationTime.valueOf(settingsUserDto.getHourOfAwakening().name()).toString();
+        // прописываем метод который вызываеться при нажатии кнопки "Оберіть час сповіщення"
+        if (notificationTime.equals("Вимкнути повідомлення")) {
+            message.setText("Наразі опція отримання повідомлень вимкнена. " +
+                    "Якщо Ви бажаєте отримувати повідомлення у визначений час, будь-ласка, оберіть час на клавіатурі.");
+            createNotificationTimeKeyboard(message);
+        } else {
+            message.setText("Обранний час сповіщення: о " + notificationTime +
+                    " кожного дня. Будь-ласка, оберіть інший час сповіщень за потреби.");
+            createNotificationTimeKeyboard(message);
         }
     }
 }

@@ -1,5 +1,11 @@
 package Enums;
 
 public enum BankName {
-    PRIVATBANK, MONOBANK, NBU
+    PRIVATBANK ("Приватбанк"), MONOBANK ("Монобанк"), NBU ("НБУ");
+
+    String bankName;
+
+    BankName(String bankName) {
+        this.bankName = bankName;
+    }
 }
