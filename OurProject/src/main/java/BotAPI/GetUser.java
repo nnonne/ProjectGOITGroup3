@@ -30,7 +30,7 @@ public class GetUser {
                     bool=false;
                 }
             }
-            if (bool==true){
+            if (bool){
                 Map<String,EnumsGetUser> base=new HashMap<>();
                 Gson gson=new GsonBuilder().setPrettyPrinting().create();
                 System.out.println("idUser = " + idUser);
