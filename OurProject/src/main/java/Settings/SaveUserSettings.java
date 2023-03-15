@@ -11,7 +11,6 @@ import java.nio.file.Files;
 
 public class SaveUserSettings {
     public void saveUser(SettingsUserDto user){
-
         String nameFile = "user" + user.getIdUser() + ".json";
         File file = new File(nameFile);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();

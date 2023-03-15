@@ -38,8 +38,6 @@ public class EnumsGetUser {
 
     }
 
-
-
     @Override
     public String toString() {
         return "EnumsGetUser{" +
