@@ -1,5 +1,13 @@
+package Settings;
+
+import Dto.SettingsUserDto;
+import Enums.BankName;
+import Enums.Currency;
+import Enums.DigitsAfterDecimalPoint;
+import Enums.NotificationTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import java.io.*;
 import java.util.*;
 
@@ -71,8 +79,8 @@ public class UserSettings {
     }
 
     // Формується Map<String, NotificationTimeDto> де key - це Id користувача, value - це NotificationTimeDto
-    private static Map<String, NotificationTimeDto> getUserByNotificationTime() {
-        Map<String, NotificationTimeDto> result = new HashMap<>();
+    private static Map<String, NotificationTime> getUserByNotificationTime() {
+        Map<String, NotificationTime> result = new HashMap<>();
         Set<Map.Entry<String, SettingsUserDto>> setUsers = getUsersSettingsFromJson().entrySet();
         for (Map.Entry<String, SettingsUserDto> set : setUsers)
             result.put(set.getKey(), set.getValue().getNotificationTime());
@@ -81,17 +89,18 @@ public class UserSettings {
 
     // Тест
     public static void main(String[] args) {
-        SettingsUserDto settingsUserDto = new SettingsUserDto("111111", BankNames.NBU,Currency.EUR,NotificationTimeDto.NINE, 2);
+        SettingsUserDto settingsUserDto = new SettingsUserDto("111111", BankName.MONOBANK, List.of(Currency.EUR, Currency.USD), NotificationTime.ELEVEN, DigitsAfterDecimalPoint.TWO);
         saveUserSettings(settingsUserDto);
-        SettingsUserDto settingsUserDto2 = new SettingsUserDto("22222", BankNames.NBU,Currency.EUR,NotificationTimeDto.FIFTEEN, 2);
+        SettingsUserDto settingsUserDto2 = new SettingsUserDto("222222", BankName.PRIVATBANK, List.of(Currency.EUR), NotificationTime.TEN, DigitsAfterDecimalPoint.TWO);
         saveUserSettings(settingsUserDto2);
-        //settingsUserDto2.setCurrency(Currency.USD);
+        settingsUserDto2.setCurrency(List.of(Currency.EUR, Currency.USD));
         saveUserSettings(settingsUserDto2);
-        SettingsUserDto settingsUserDto3 = new SettingsUserDto("33333", BankNames.NBU,Currency.EUR,NotificationTimeDto.TEN, 2);
+        SettingsUserDto settingsUserDto3 = new SettingsUserDto("333333", BankName.NBU, List.of(Currency.USD), NotificationTime.OFFNOTIFICATIONS, DigitsAfterDecimalPoint.THREE);
         saveUserSettings(settingsUserDto3);
-        System.out.println("getUserById(\"22222\") = " + getUserById("22222"));
+        System.out.println("getUserById(\"222222\") = " + getUserById("222222"));
         System.out.println("getUserByNotificationTime() = " + getUserByNotificationTime());
-        System.out.println("existUserById(\"5555\") = " + existUserById("22222"));
+        System.out.println("existUserById(\"333333\") = " + existUserById("333333"));
+        System.out.println("existUserById(\"555555\") = " + existUserById("555555"));
 
     }
 }
