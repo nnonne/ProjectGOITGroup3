@@ -2,7 +2,9 @@ package BotAPI;
 
 import Dto.SettingsUserDto;
 import Enums.BankName;
+import Enums.Currency;
 import Enums.DigitsAfterDecimalPoint;
+import Settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -175,31 +177,35 @@ public class Keyboards {
             if (("✅ " + USD_BUTTON).equals(callBackData) || EUR_BUTTON.equals(callBackData)) {
                 firstRowInLine = createButton(USD_BUTTON);
                 secondRowInLine = createButton("✅ " + EUR_BUTTON);
-//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", USD_BUTTON);
-//                updateUserSettings(settingsUserDto.getIdUser(), "Currency", EUR_BUTTON);
+                settingsUserDto.setCurrency(List.of(Currency.EUR));
+                UserSettings.saveUserSettings(settingsUserDto);
+
             }
             if (USD_BUTTON.equals(callBackData) || ("✅ " + EUR_BUTTON).equals(callBackData)) {
                 firstRowInLine = createButton("✅ " + USD_BUTTON);
                 secondRowInLine = createButton(EUR_BUTTON);
-//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", EUR_BUTTON);
-//                updateUserSettings(settingsUserDto.getIdUser(), "Currency", USD_BUTTON);
+                settingsUserDto.setCurrency(List.of(Currency.USD));
+                UserSettings.saveUserSettings(settingsUserDto);
             }
             if (USD_BUTTON.equals(callBackData) || EUR_BUTTON.equals(callBackData)) {
                 firstRowInLine = createButton("✅ " + USD_BUTTON);
                 secondRowInLine = createButton("✅ " + EUR_BUTTON);
-//                updateUserSettings(settingsUserDto.getIdUser(), "Currency", callBackData);
+                settingsUserDto.setCurrency(List.of(Currency.USD, Currency.EUR));
+                UserSettings.saveUserSettings(settingsUserDto);
             }
         }
         if (settingsUserDto.getCurrency().size() == 2) {
             if (("✅ " + EUR_BUTTON).equals(callBackData)) {
                 firstRowInLine = createButton("✅ " + USD_BUTTON);
                 secondRowInLine = createButton(EUR_BUTTON);
-//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", EUR_BUTTON);
+                settingsUserDto.setCurrency(List.of(Currency.USD));
+                UserSettings.saveUserSettings(settingsUserDto);
             }
             if (("✅ " + USD_BUTTON).equals(callBackData)) {
                 firstRowInLine = createButton(USD_BUTTON);
                 secondRowInLine = createButton("✅ " + EUR_BUTTON);
-//                deleteCurrencyFromJson(settingsUserDto.getIdUser(), "Currency", USD_BUTTON);
+                settingsUserDto.setCurrency(List.of(Currency.EUR));
+                UserSettings.saveUserSettings(settingsUserDto);
             }
         }
         rowsInLine.add(firstRowInLine);
@@ -215,26 +221,5 @@ public class Keyboards {
         inlineKeyboardButton.setCallbackData(buttonName);
         inlineKeyboardButtons.add(inlineKeyboardButton);
         return inlineKeyboardButtons;
-    }
-
-    public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update, SettingsUserDto settingsUserDto) {
-        EditMessageReplyMarkup newMessage = new EditMessageReplyMarkup();
-        newMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
-        newMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
-        newMessage.setInlineMessageId(update.getCallbackQuery().getInlineMessageId());
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        if (NBU_BUTTON.equals(callBackData) || PRIVATBANK_BUTTON.equals(callBackData) || MONOBANK_BUTTON.equals(callBackData)) {
-//            updateUserSettings(settingsUserDto.getIdUser(), "Bank", callBackData);
-            inlineKeyboardMarkup = createBankKeyboard(settingsUserDto);
-        }
-        if (TWO_DIGITS_BUTTON.equals(callBackData) || THREE_DIGITS_BUTTON.equals(callBackData) || FOUR_DIGITS_BUTTON.equals(callBackData)) {
-//            updateUserSettings(settingsUserDto.getIdUser(), "Decimal", callBackData);
-            inlineKeyboardMarkup = createDigitsKeyboard(settingsUserDto);
-        }
-        if (USD_BUTTON.equals(callBackData) || EUR_BUTTON.equals(callBackData) || ("✅ " + USD_BUTTON).equals(callBackData) || ("✅ " + EUR_BUTTON).equals(callBackData)) {
-            inlineKeyboardMarkup = changeCurrencyKeyboard(callBackData, settingsUserDto);
-        }
-        newMessage.setReplyMarkup(inlineKeyboardMarkup);
-        return newMessage;
     }
 }

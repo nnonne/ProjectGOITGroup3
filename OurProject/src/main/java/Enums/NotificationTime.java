@@ -18,4 +18,16 @@ public enum NotificationTime {
     NotificationTime(String time) {
         this.time = time;
     }
+
+    public String getValue() {
+        return time;
+    }
+
+    public static NotificationTime getByValue(String value) {
+        for (NotificationTime notificationTime : NotificationTime.values()) {
+            if (value.equals(notificationTime.getValue()))
+                return notificationTime;
+        }
+        throw new IllegalArgumentException("No NotificationTime with value " + value);
+    }
 }
