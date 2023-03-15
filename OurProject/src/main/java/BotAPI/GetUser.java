@@ -20,7 +20,7 @@ import static Enums.NotificationTime.TEN;
 
 public class GetUser {
     public void getUsetTGId(String messageText, String idUser ){
-        try (InputStream word=new FileInputStream("OurProject/src/main/java/BotAPI/userID.json");
+        try (InputStream word=new FileInputStream("OurProject/src/main/java/BotAPI/users.json");
              Scanner scanner = new Scanner(word)) {
 
             boolean bool=true;
@@ -42,7 +42,7 @@ public class GetUser {
                     base.put("NotificationTime", new EnumsGetUser(TEN));
                     FileWriter fileWriter;
                     try {
-                        fileWriter = new FileWriter("OurProject/src/main/java/BotAPI/userID.json",true);
+                        fileWriter = new FileWriter("OurProject/src/main/java/BotAPI/users.json",true);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
