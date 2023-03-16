@@ -1,5 +1,7 @@
 package Enums;
 
+import java.util.Objects;
+
 public enum NotificationTime {
     NINE ("9:00"),
     TEN ("10:00"),
@@ -11,7 +13,7 @@ public enum NotificationTime {
     SIXTEEN ("16:00"),
     SEVENTEEN ("17:00"),
     EIGHTEEN ("18:00"),
-    OFFNOTIFICATIONS ("Вимкнути сповіщення");
+    OFFNOTIFICATIONS ("Вимкнути повыдомлення");
 
     String time;
 
@@ -30,4 +32,5 @@ public enum NotificationTime {
         }
         throw new IllegalArgumentException("No NotificationTime with value " + value);
     }
+
 }

@@ -13,6 +13,6 @@ public class Buttons {
     public static final String USD_BUTTON = "USD";
     public static final String EUR_BUTTON = "EUR";
     public static final String NBU_BUTTON = "НБУ";
-    public static final String PRIVATBANK_BUTTON = "ПриватБанк";
+    public static final String PRIVATBANK_BUTTON = "Приватбанк";
     public static final String MONOBANK_BUTTON = "Монобанк";
 }

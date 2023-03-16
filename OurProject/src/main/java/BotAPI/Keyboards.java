@@ -90,7 +90,7 @@ public class Keyboards {
         List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
-        String userDigits = DigitsAfterDecimalPoint.valueOf(settingsUserDto.getDecimalPoint().name()).toString();
+        String userDigits = settingsUserDto.getDecimalPoint().getValue();
         if (TWO_DIGITS_BUTTON.equals(userDigits)) {
             firstRowInLine = createButton("✅ " + TWO_DIGITS_BUTTON);
             secondRowInLine = createButton(THREE_DIGITS_BUTTON);
@@ -119,7 +119,7 @@ public class Keyboards {
         List<InlineKeyboardButton> firstRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> secondRowInLine = new ArrayList<>();
         List<InlineKeyboardButton> thirdRowInLine = new ArrayList<>();
-        String userBank = BankName.valueOf(settingsUserDto.getBankName().name()).toString();
+        String userBank = settingsUserDto.getBankName().getValue();
         if (NBU_BUTTON.equals(userBank)) {
             firstRowInLine = createButton("✅ " + NBU_BUTTON);
             secondRowInLine = createButton(PRIVATBANK_BUTTON);

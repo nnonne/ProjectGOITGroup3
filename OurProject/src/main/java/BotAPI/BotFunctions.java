@@ -19,13 +19,14 @@ import static BotAPI.Keyboards.*;
 
 public class BotFunctions {
 
-    public static void pressStart(SendMessage message, String userID) {
+    public static SettingsUserDto pressStart(SendMessage message, String userID) {
         if (!UserSettings.existUserById(userID)){
             UserSettings.saveUserSettings(new SettingsUserDto(userID, BankName.MONOBANK, List.of(Currency.EUR, Currency.USD), NotificationTime.ELEVEN, DigitsAfterDecimalPoint.TWO));
         }
+        SettingsUserDto settingsUserDto = UserSettings.getUserById(userID);
         message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
         createDefaultKeyboard(message);
-
+        return settingsUserDto;
     }
     public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update, SettingsUserDto settingsUserDto) {
         EditMessageReplyMarkup newMessage = new EditMessageReplyMarkup();
@@ -51,7 +52,7 @@ public class BotFunctions {
     }
 
     public static void pressNotificationTime(SendMessage message, SettingsUserDto settingsUserDto) {
-        String notificationTime = NotificationTime.valueOf(settingsUserDto.getNotificationTime().name()).toString();
+        String notificationTime = settingsUserDto.getNotificationTime().getValue();
         // прописываем метод который вызываеться при нажатии кнопки "Оберіть час сповіщення"
         if (notificationTime.equals("Вимкнути повідомлення")) {
             message.setText("Наразі опція отримання повідомлень вимкнена. " +

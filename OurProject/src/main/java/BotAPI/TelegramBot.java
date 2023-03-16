@@ -16,7 +16,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 
 import static BotAPI.BotFunctions.*;
@@ -61,23 +63,22 @@ public class TelegramBot extends TelegramLongPollingBot {
             String messageText = update.getMessage().getText();
             message.setChatId(update.getMessage().getChatId().toString());
             settingsUserDto = UserSettings.getUserById(userID);
-            String notificationTime = NotificationTime.valueOf(settingsUserDto.getNotificationTime().name()).toString();
             if (messageText.equals("/start")) {
-                pressStart(message, userID);
+                settingsUserDto = pressStart(message, userID);
             }
-            if (SETTINGS_BUTTON.equals(messageText)) {
+            else if (SETTINGS_BUTTON.equals(messageText)) {
                 message.setText(SETTINGS_BUTTON);
                 createSettingsKeyboard(message);
             }
-            if (GET_INFO_BUTTON.equals(messageText)) {
-                // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
-                message.setText(MessageUserInfo.showInfo(settingsUserDto)); // здесь текст нужно изменить на информацию по курсу валют
+            else if (GET_INFO_BUTTON.equals(messageText)) {
+                message.setText(MessageUserInfo.showInfo(settingsUserDto));
                 createStartKeyboard(message);
             }
-            if (notificationTime.equals(messageText)){
-                settingsUserDto.setNotificationTime(NotificationTime.getByValue(notificationTime));
+            else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(), messageText))){
+                settingsUserDto.setNotificationTime(NotificationTime.getByValue(messageText));
                 UserSettings.saveUserSettings(settingsUserDto);
-                message.setText("Обраний час сповіщень: " + notificationTime);
+                message.setText("Обраний час сповіщень: " + messageText);
+                createDefaultKeyboard(message);
             }
         } else if (update.hasCallbackQuery()) {
             String callBackData = update.getCallbackQuery().getData();
@@ -86,8 +87,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             settingsUserDto = UserSettings.getUserById(userID);
             switch (callBackData) {
                 case GET_INFO_BUTTON:
-                    // прописываем метод который вызываеться при нажатии кнопки "Отримати інфо"
-                    message.setText("Отримуємо інфо по курсу валют"); // здесь текст нужно изменить на информацию по курсу валют
+                    message.setText(MessageUserInfo.showInfo(settingsUserDto));
                     createStartKeyboard(message);
                     break;
                 case SETTINGS_BUTTON:
@@ -95,7 +95,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                     createSettingsKeyboard(message);
                     break;
                 case DIGITS_AFTER_DECIMAL_POINT_BUTTON:
-                    // прописываем метод который вызываеться при нажатии кнопки "К-сть знаків після коми"
                     message.setText(DIGITS_AFTER_DECIMAL_POINT_BUTTON);
                     message.setReplyMarkup(createDigitsKeyboard(settingsUserDto));
                     break;
@@ -112,12 +111,10 @@ public class TelegramBot extends TelegramLongPollingBot {
                     executeChangedMessage(placeCheckMark(callBackData, update, settingsUserDto));
                     break;
                 case BANK_BUTTON:
-                    // прописываем метод который вызываеться при нажатии кнопки "Банк"
                     message.setText(BANK_BUTTON);
                     message.setReplyMarkup(createBankKeyboard(settingsUserDto));
                     break;
                 case CURRENCY_RATE_BUTTON:
-                    // прописываем метод который вызываеться при нажатии кнопки "Валюти"
                     message.setText(CURRENCY_RATE_BUTTON);
                     createCurrencyKeyboard(message, settingsUserDto);
                     break;
