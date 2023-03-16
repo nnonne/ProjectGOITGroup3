@@ -16,7 +16,7 @@ import static BotAPI.Keyboards.*;
 public class TelegramBot extends TelegramLongPollingBot {
 
     Properties property = new Properties();
-    public static final String FILE_NAME = "./src/main/resources/botsettings.properties";
+    public static final String FILE_NAME = "OurProject/src/main/resources/botsettings.properties";
 
     @Override
     public String getBotUsername() {

@@ -19,7 +19,7 @@ public class HourCurrencyNotification {
     public static void main(String[] args) {
         ScheduledExecutorService service = Executors.newScheduledThreadPool(2);
 
-        service.scheduleAtFixedRate(new TaskTime(), 0, 2, TimeUnit.SECONDS);
+        service.scheduleAtFixedRate(new TaskTime(), 0, 4, TimeUnit.SECONDS);
     }
 
     public static class TaskTime implements Runnable{

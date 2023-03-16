@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public class UserSettings {
-    private static final String PATH = "src/main/resources/users.json";
+    private static final String PATH = "OurProject/src/main/resources/users.json";
 
     // Перевірка, що файл "users.json" існує та створення якщо він відсутній
     private static File checkFileAvailability() {
@@ -28,7 +28,7 @@ public class UserSettings {
     }
 
     // Формується Map<String, SettingsUserDto> усіх користувачів з json файлу, key - це Id користувача, value - це SettingsUserDto
-    private synchronized static Map<String, SettingsUserDto> getUsersSettingsFromJson() {
+    public synchronized static Map<String, SettingsUserDto> getUsersSettingsFromJson() {
         List<SettingsUserDto> allUserlist = new ArrayList<>();
         try (BufferedReader buff = new BufferedReader(new FileReader(checkFileAvailability()))) {
             allUserlist = new Gson().fromJson(buff, new TypeToken<List<SettingsUserDto>>() {
