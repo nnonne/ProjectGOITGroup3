@@ -1,6 +1,5 @@
 package BotAPI;
 
-import BankService.CurrencyRateDto;
 import BankService.*;
 import Dto.SettingsUserDto;
 
@@ -15,20 +14,20 @@ public class MessageUserInfo {
         List<CurrencyRateDto> currencyRateDtoList;
         switch (String.valueOf(settingsUserDto.getBankName())) {
             case "NBU":
-                CurrencyRertrievalNBUService currencyRertrievalNBUService = new CurrencyRertrievalNBUService();
-                currencyRateDtoList = currencyRertrievalNBUService.getCurrencyRates();
+                CurrencyRetrievalNBUService currencyRetrievalNBUService = new CurrencyRetrievalNBUService();
+                currencyRateDtoList = currencyRetrievalNBUService.getCurrencyRates();
                 bankName = "НБУ";
                 break;
             case "MONOBANK":
-                CurrencyRertrievalMonoService currencyRertrievalMonoService = new CurrencyRertrievalMonoService();
-                currencyRateDtoList = currencyRertrievalMonoService.getCurrencyRates();
+                CurrencyRetrievalMonoService currencyRetrievalMonoService = new CurrencyRetrievalMonoService();
+                currencyRateDtoList = currencyRetrievalMonoService.getCurrencyRates();
                 bankName = "MonoBank";
                 break;
             case "PRIVATBANK":
             default:
-                CurrencyRertrievalPrivatService currencyRertrievalPrivatService = new CurrencyRertrievalPrivatService();
-                currencyRateDtoList = currencyRertrievalPrivatService.getCurrencyRates();
-                bankName = "PrivateBank";
+                CurrencyRetrievalPrivatService currencyRetrievalPrivatService = new CurrencyRetrievalPrivatService();
+                currencyRateDtoList = currencyRetrievalPrivatService.getCurrencyRates();
+                bankName = "PrivatBank";
                 break;
         }
         String res;

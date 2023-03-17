@@ -10,25 +10,26 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CurrencyRertrievalNBUService implements CurrencyRertrievalService {
+public class CurrencyRetrievalPrivatService implements CurrencyRetrievalService {
 
-    private static final String URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
+    private static final String URL = "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11";
     @Override
     public List<CurrencyRateDto> getCurrencyRates() {
         try {
             String response = Jsoup.connect(URL).ignoreContentType(true).get().body().text();
-            List<CurrencyRateNBUResponseDto> responseDtos = convertResponseToList(response);
+            List<CurrencyRatePrivatResponseDto> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
-                    .map(dto -> new CurrencyRateDto(BankName.NBU,dto.getR030(), dto.getRate()))
-                    .filter(dto ->  Currency.UNKNOWN != dto.getCurrency() )
+                    .map(dto -> new CurrencyRateDto(BankName.PRIVATBANK,
+                            dto.getCcy(), dto.getBuy(), dto.getSale()))
+                    .filter(dto ->  Currency.UNKNOWN!=dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private List<CurrencyRateNBUResponseDto> convertResponseToList(String response) {
-        Type type = TypeToken.getParameterized(List.class, CurrencyRateNBUResponseDto.class).getType();
+    private List<CurrencyRatePrivatResponseDto> convertResponseToList(String response) {
+        Type type = TypeToken.getParameterized(List.class, CurrencyRatePrivatResponseDto.class).getType();
         Gson gson = new Gson();
         return gson.fromJson(response, type);
     }

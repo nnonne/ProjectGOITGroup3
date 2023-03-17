@@ -21,4 +21,3 @@ public class SettingsUserDto {
     private DigitsAfterDecimalPoint decimalPoint;
 
 }
-

@@ -1,13 +1,9 @@
 package BotAPI;
 
 import Dto.SettingsUserDto;
-import Enums.BankName;
 import Enums.Currency;
-import Enums.DigitsAfterDecimalPoint;
 import Settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -60,7 +56,7 @@ public class Keyboards {
         thirdRow.add("17:00");
         KeyboardRow fourthRow = new KeyboardRow();
         fourthRow.add("18:00");
-        fourthRow.add("Вимкнути повідомлення");
+        fourthRow.add("Вимкнути сповіщення");
         keyboardRows.add(firstRow);
         keyboardRows.add(secondRow);
         keyboardRows.add(thirdRow);

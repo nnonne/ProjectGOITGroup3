@@ -2,6 +2,6 @@ package BankService;
 
 import java.util.List;
 
-public interface CurrencyRertrievalService {
+public interface CurrencyRetrievalService {
     List<CurrencyRateDto> getCurrencyRates();
 }
