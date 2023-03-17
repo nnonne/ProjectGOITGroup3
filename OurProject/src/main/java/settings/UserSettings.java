@@ -1,6 +1,6 @@
-package Settings;
+package settings;
 
-import Dto.SettingsUserDto;
+import dto.SettingsUserDto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

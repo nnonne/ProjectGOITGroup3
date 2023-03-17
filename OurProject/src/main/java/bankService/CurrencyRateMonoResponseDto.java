@@ -1,4 +1,4 @@
-package BankService;
+package bankService;
 
 import lombok.Getter;
 import lombok.Setter;

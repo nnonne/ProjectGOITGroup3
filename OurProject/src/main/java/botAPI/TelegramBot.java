@@ -1,8 +1,8 @@
-package BotAPI;
+package botAPI;
 
-import Dto.SettingsUserDto;
-import Enums.NotificationTime;
-import Settings.UserSettings;
+import dto.SettingsUserDto;
+import enums.NotificationTime;
+import settings.UserSettings;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
@@ -16,9 +16,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Properties;
 
-import static BotAPI.BotFunctions.*;
-import static BotAPI.Buttons.*;
-import static BotAPI.Keyboards.*;
+import static botAPI.BotFunctions.*;
+import static botAPI.Buttons.*;
+import static botAPI.Keyboards.*;
 
 public class TelegramBot extends TelegramLongPollingBot {
 

@@ -1,9 +1,9 @@
-package Dto;
+package dto;
 
-import Enums.BankName;
-import Enums.Currency;
-import Enums.DigitsAfterDecimalPoint;
-import Enums.NotificationTime;
+import enums.BankName;
+import enums.Currency;
+import enums.DigitsAfterDecimalPoint;
+import enums.NotificationTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;

@@ -1,11 +1,11 @@
-package BotAPI;
+package botAPI;
 
-import Dto.SettingsUserDto;
-import Enums.BankName;
-import Enums.Currency;
-import Enums.DigitsAfterDecimalPoint;
-import Enums.NotificationTime;
-import Settings.UserSettings;
+import dto.SettingsUserDto;
+import enums.BankName;
+import enums.Currency;
+import enums.DigitsAfterDecimalPoint;
+import enums.NotificationTime;
+import settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -13,9 +13,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 import java.util.List;
 
-import static BotAPI.Buttons.*;
-import static BotAPI.Buttons.EUR_BUTTON;
-import static BotAPI.Keyboards.*;
+import static botAPI.Buttons.*;
+import static botAPI.Buttons.EUR_BUTTON;
+import static botAPI.Keyboards.*;
 
 public class BotFunctions {
 

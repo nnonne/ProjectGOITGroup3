@@ -1,8 +1,8 @@
-package BotAPI;
+package botAPI;
 
-import Dto.SettingsUserDto;
-import Enums.Currency;
-import Settings.UserSettings;
+import dto.SettingsUserDto;
+import enums.Currency;
+import settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -12,7 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-import static BotAPI.Buttons.*;
+import static botAPI.Buttons.*;
 
 public class Keyboards {
 
