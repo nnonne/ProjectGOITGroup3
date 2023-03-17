@@ -14,19 +14,16 @@ public class MessageUserInfo {
         List<CurrencyRateDto> currencyRateDtoList;
         switch (String.valueOf(settingsUserDto.getBankName())) {
             case "NBU":
-                CurrencyRetrievalNBUService currencyRetrievalNBUService = new CurrencyRetrievalNBUService();
-                currencyRateDtoList = currencyRetrievalNBUService.getCurrencyRates();
+                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoNBUList;
                 bankName = "НБУ";
                 break;
             case "MONOBANK":
-                CurrencyRetrievalMonoService currencyRetrievalMonoService = new CurrencyRetrievalMonoService();
-                currencyRateDtoList = currencyRetrievalMonoService.getCurrencyRates();
+                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoMonoList;
                 bankName = "MonoBank";
                 break;
             case "PRIVATBANK":
             default:
-                CurrencyRetrievalPrivatService currencyRetrievalPrivatService = new CurrencyRetrievalPrivatService();
-                currencyRateDtoList = currencyRetrievalPrivatService.getCurrencyRates();
+                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoPrivatList;
                 bankName = "PrivatBank";
                 break;
         }
