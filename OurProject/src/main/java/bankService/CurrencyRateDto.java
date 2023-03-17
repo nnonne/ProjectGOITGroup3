@@ -1,6 +1,6 @@
-package BankService;
+package bankService;
 
-import Enums.*;
+import enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +11,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CurrencyRateDto {
-    private Enums.BankName bankName;
-    private Enums.Currency currency;
+    private enums.BankName bankName;
+    private enums.Currency currency;
     private BigDecimal buyRate;
     private BigDecimal sellRate;
 
