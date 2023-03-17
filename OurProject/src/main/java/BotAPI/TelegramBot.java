@@ -59,6 +59,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         SendMessage message = new SendMessage();
         if (update.hasMessage() && update.getMessage().hasText()) {
+            ResponseMysettingsEndHelp messSettings=new ResponseMysettingsEndHelp();
+            String output= messSettings.mysettingsEndHelp(String.valueOf(update.getMessage().getText()), update.getMessage().getChatId().toString());
+            message.setText(output);
             String userID = update.getMessage().getChatId().toString();
             String messageText = update.getMessage().getText();
             message.setChatId(update.getMessage().getChatId().toString());
