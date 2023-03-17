@@ -21,30 +21,39 @@ public class BotFunctions {
 
     public static SettingsUserDto pressStart(SendMessage message, String userID) {
         if (!UserSettings.existUserById(userID)){
-            UserSettings.saveUserSettings(new SettingsUserDto(userID, BankName.MONOBANK, List.of(Currency.EUR, Currency.USD), NotificationTime.ELEVEN, DigitsAfterDecimalPoint.TWO));
+            UserSettings.saveUserSettings(new SettingsUserDto(userID, BankName.MONOBANK, List.of(Currency.EUR, Currency.USD),
+                                                              NotificationTime.ELEVEN, DigitsAfterDecimalPoint.TWO));
         }
         SettingsUserDto settingsUserDto = UserSettings.getUserById(userID);
-        message.setText("Ласкаво просимо. Цей бот допоможе відслідковувати актуальні курси валют.");
+        message.setText("Ласкаво просимо. Цей бот допоможе Вам відслідковувати актуальні курси валют.");
         createDefaultKeyboard(message);
         return settingsUserDto;
     }
-    public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update, SettingsUserDto settingsUserDto) {
+    public static EditMessageReplyMarkup placeCheckMark(String callBackData, Update update,
+                                                        SettingsUserDto settingsUserDto) {
         EditMessageReplyMarkup newMessage = new EditMessageReplyMarkup();
         newMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
         newMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
         newMessage.setInlineMessageId(update.getCallbackQuery().getInlineMessageId());
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        if (NBU_BUTTON.equals(callBackData) || PRIVATBANK_BUTTON.equals(callBackData) || MONOBANK_BUTTON.equals(callBackData)) {
+        if (NBU_BUTTON.equals(callBackData)
+                || PRIVATBANK_BUTTON.equals(callBackData)
+                || MONOBANK_BUTTON.equals(callBackData)) {
             settingsUserDto.setBankName(BankName.getByValue(callBackData));
             UserSettings.saveUserSettings(settingsUserDto);
             inlineKeyboardMarkup = createBankKeyboard(settingsUserDto);
         }
-        if (TWO_DIGITS_BUTTON.equals(callBackData) || THREE_DIGITS_BUTTON.equals(callBackData) || FOUR_DIGITS_BUTTON.equals(callBackData)) {
+        if (TWO_DIGITS_BUTTON.equals(callBackData)
+                || THREE_DIGITS_BUTTON.equals(callBackData)
+                || FOUR_DIGITS_BUTTON.equals(callBackData)) {
             settingsUserDto.setDecimalPoint(DigitsAfterDecimalPoint.getByValue(callBackData));
             UserSettings.saveUserSettings(settingsUserDto);
             inlineKeyboardMarkup = createDigitsKeyboard(settingsUserDto);
         }
-        if (USD_BUTTON.equals(callBackData) || EUR_BUTTON.equals(callBackData) || ("✅ " + USD_BUTTON).equals(callBackData) || ("✅ " + EUR_BUTTON).equals(callBackData)) {
+        if (USD_BUTTON.equals(callBackData)
+                || EUR_BUTTON.equals(callBackData)
+                || ("✅ " + USD_BUTTON).equals(callBackData)
+                || ("✅ " + EUR_BUTTON).equals(callBackData)) {
             inlineKeyboardMarkup = changeCurrencyKeyboard(callBackData, settingsUserDto);
         }
         newMessage.setReplyMarkup(inlineKeyboardMarkup);
@@ -53,14 +62,13 @@ public class BotFunctions {
 
     public static void pressNotificationTime(SendMessage message, SettingsUserDto settingsUserDto) {
         String notificationTime = settingsUserDto.getNotificationTime().getValue();
-        // прописываем метод который вызываеться при нажатии кнопки "Оберіть час сповіщення"
         if (notificationTime.equals("Вимкнути повідомлення")) {
             message.setText("Наразі опція отримання повідомлень вимкнена. " +
-                    "Якщо Ви бажаєте отримувати повідомлення у визначений час, будь-ласка, оберіть час на клавіатурі.");
+                    "Якщо Ви бажаєте отримувати повідомлення у визначений час, будь ласка, оберіть час на клавіатурі.");
             createNotificationTimeKeyboard(message);
         } else {
-            message.setText("Обранний час сповіщення: о " + notificationTime +
-                    " кожного дня. Будь-ласка, оберіть інший час сповіщень за потреби.");
+            message.setText("Обраний час сповіщення: о " + notificationTime +
+                    " кожного дня. Будь ласка, оберіть інший час сповіщень за потреби.");
             createNotificationTimeKeyboard(message);
         }
     }

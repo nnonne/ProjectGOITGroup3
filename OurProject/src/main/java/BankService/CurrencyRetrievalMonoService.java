@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class CurrencyRertrievalMonoService implements CurrencyRertrievalService {
+public class CurrencyRetrievalMonoService implements CurrencyRetrievalService {
 
     private static final String URL = "https://api.monobank.ua/bank/currency";
     @Override
@@ -20,7 +20,9 @@ public class CurrencyRertrievalMonoService implements CurrencyRertrievalService 
             List<CurrencyRateMonoResponseDto> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
                     .filter(dto ->  840!=dto.getCurrencyCodeB() )
-                    .map(dto -> new CurrencyRateDto(Enums.BankName.MONOBANK, dto.getCurrencyCodeA(), dto.getRateBuy(), dto.getRateSell()))
+                    .map(dto -> new CurrencyRateDto(Enums.BankName.MONOBANK,
+                            dto.getCurrencyCodeA(), dto.getRateBuy(),
+                            dto.getRateSell()))
                     .filter(dto ->  Enums.Currency.UNKNOWN !=dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {

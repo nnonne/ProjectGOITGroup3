@@ -1,23 +1,18 @@
 package BotAPI;
 
 import Dto.SettingsUserDto;
-import Enums.BankName;
-import Enums.Currency;
-import Enums.DigitsAfterDecimalPoint;
 import Enums.NotificationTime;
 import Settings.UserSettings;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 
@@ -28,7 +23,7 @@ import static BotAPI.Keyboards.*;
 public class TelegramBot extends TelegramLongPollingBot {
 
     Properties property = new Properties();
-    public static final String FILE_NAME = "./src/main/resources/botsettings.properties";
+    public static final String FILE_NAME = "OurProject/src/main/resources/botsettings.properties";
     SettingsUserDto settingsUserDto;
 
     @Override
@@ -74,7 +69,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 message.setText(MessageUserInfo.showInfo(settingsUserDto));
                 createStartKeyboard(message);
             }
-            else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(), messageText))){
+            else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(),
+                                                                                  messageText))){
                 settingsUserDto.setNotificationTime(NotificationTime.getByValue(messageText));
                 UserSettings.saveUserSettings(settingsUserDto);
                 message.setText("Обраний час сповіщень: " + messageText);
