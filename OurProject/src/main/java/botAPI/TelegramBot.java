@@ -1,6 +1,6 @@
 package botAPI;
 
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
 import enums.NotificationTime;
 import Settings.UserSettings;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
