@@ -1,8 +1,7 @@
 package botAPI;
 
-import settings.SettingsUserDto;
+import settings.*;
 import enums.Currency;
-import settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
