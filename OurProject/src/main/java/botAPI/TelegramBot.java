@@ -60,20 +60,20 @@ public class TelegramBot extends TelegramLongPollingBot {
             settingsUserDto = UserSettings.getUserById(userID);
             if (messageText.equals("/start")) {
                 settingsUserDto = pressStart(message, userID);
-            }
-            else if (SETTINGS_BUTTON.equals(messageText)) {
+            } else if (SETTINGS_BUTTON.equals(messageText)) {
                 message.setText(SETTINGS_BUTTON);
                 createSettingsKeyboard(message);
-            }
-            else if (GET_INFO_BUTTON.equals(messageText)) {
+            } else if (GET_INFO_BUTTON.equals(messageText)) {
                 message.setText(MessageUserInfo.showInfo(settingsUserDto));
                 createStartKeyboard(message);
-            }
-            else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(),
-                                                                                  messageText))){
+            } else if (Arrays.stream(NotificationTime.values())
+                    .anyMatch(element -> Objects.equals(element.getValue(), messageText))) {
                 settingsUserDto.setNotificationTime(NotificationTime.getByValue(messageText));
                 UserSettings.saveUserSettings(settingsUserDto);
                 message.setText("Обраний час сповіщень: " + messageText);
+                createDefaultKeyboard(message);
+            } else if ("Назад".equals(messageText)) {
+                message.setText("Ви повернулися в початкове меню.");
                 createDefaultKeyboard(message);
             }
         } else if (update.hasCallbackQuery()) {

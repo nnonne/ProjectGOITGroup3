@@ -57,6 +57,7 @@ public class Keyboards {
         KeyboardRow fourthRow = new KeyboardRow();
         fourthRow.add("18:00");
         fourthRow.add("Вимкнути сповіщення");
+        fourthRow.add("Назад");
         keyboardRows.add(firstRow);
         keyboardRows.add(secondRow);
         keyboardRows.add(thirdRow);
