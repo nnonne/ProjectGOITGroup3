@@ -1,4 +1,4 @@
-package Settings;
+package settings;
 
 import settings.SettingsUserDto;
 import enums.NotificationTime;
