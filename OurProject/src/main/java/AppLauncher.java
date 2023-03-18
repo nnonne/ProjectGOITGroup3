@@ -19,6 +19,6 @@ public class AppLauncher {
         }
         ScheduledExecutorService service = Executors.newScheduledThreadPool(2);
 
-        service.scheduleAtFixedRate(new HourCurrencyRatesUpdate(), 0, 1, TimeUnit.MINUTES);
+        service.scheduleAtFixedRate(new HourCurrencyRatesUpdate(), 0, 5, TimeUnit.MINUTES);
     }
 }
