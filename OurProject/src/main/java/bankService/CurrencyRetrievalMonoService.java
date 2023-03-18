@@ -1,4 +1,4 @@
-package BankService;
+package bankService;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -20,10 +20,10 @@ public class CurrencyRetrievalMonoService implements CurrencyRetrievalService {
             List<CurrencyRateMonoResponseDto> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
                     .filter(dto ->  840!=dto.getCurrencyCodeB() )
-                    .map(dto -> new CurrencyRateDto(Enums.BankName.MONOBANK,
+                    .map(dto -> new CurrencyRateDto(enums.BankName.MONOBANK,
                             dto.getCurrencyCodeA(), dto.getRateBuy(),
                             dto.getRateSell()))
-                    .filter(dto ->  Enums.Currency.UNKNOWN !=dto.getCurrency() )
+                    .filter(dto ->  enums.Currency.UNKNOWN !=dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new RuntimeException(e);

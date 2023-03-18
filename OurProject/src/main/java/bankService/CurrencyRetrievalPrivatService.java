@@ -1,6 +1,6 @@
-package BankService;
+package bankService;
 
-import Enums.*;
+import enums.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.jsoup.Jsoup;

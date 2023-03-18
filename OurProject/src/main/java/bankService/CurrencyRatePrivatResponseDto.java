@@ -1,6 +1,6 @@
-package BankService;
+package bankService;
 
-import Enums.*;
+import enums.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

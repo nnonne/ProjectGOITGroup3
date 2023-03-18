@@ -1,7 +1,7 @@
-package BotAPI;
+package botAPI;
 
-import Dto.SettingsUserDto;
-import Enums.NotificationTime;
+import dto.SettingsUserDto;
+import enums.NotificationTime;
 import Settings.UserSettings;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -19,9 +19,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static BotAPI.BotFunctions.*;
-import static BotAPI.Buttons.*;
-import static BotAPI.Keyboards.*;
+import static botAPI.BotFunctions.*;
+import static botAPI.Buttons.*;
+import static botAPI.Keyboards.*;
 import static Settings.UserSettings.getUserById;
 import static Settings.UserSettings.getUserByNotificationTime;
 
@@ -171,7 +171,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (Map.Entry<String, NotificationTime> allUser : userByNotification) {
                 if (hour == allUser.getValue().getIntValue()) {
                     message.setChatId(allUser.getKey());
-                    message.setText(BotAPI.MessageUserInfo.showInfo(getUserById(allUser.getKey())));
+                    message.setText(botAPI.MessageUserInfo.showInfo(getUserById(allUser.getKey())));
                     try {
                         execute(message);
                     } catch (
