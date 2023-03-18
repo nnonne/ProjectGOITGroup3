@@ -1,6 +1,6 @@
 package botAPI;
 
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
 import enums.Currency;
 import settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
