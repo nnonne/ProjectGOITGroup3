@@ -1,8 +1,8 @@
 package botAPI;
 
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
 import enums.NotificationTime;
-import settings.UserSettings;
+import Settings.UserSettings;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
@@ -12,13 +12,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Properties;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static botAPI.BotFunctions.*;
 import static botAPI.Buttons.*;
 import static botAPI.Keyboards.*;
+import static Settings.UserSettings.getUserById;
+import static Settings.UserSettings.getUserByNotificationTime;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
@@ -57,22 +62,25 @@ public class TelegramBot extends TelegramLongPollingBot {
             String userID = update.getMessage().getChatId().toString();
             String messageText = update.getMessage().getText();
             message.setChatId(update.getMessage().getChatId().toString());
-            settingsUserDto = UserSettings.getUserById(userID);
+            settingsUserDto = getUserById(userID);
             if (messageText.equals("/start")) {
                 settingsUserDto = pressStart(message, userID);
-            } else if (SETTINGS_BUTTON.equals(messageText)) {
+            }
+            else if (SETTINGS_BUTTON.equals(messageText)) {
                 message.setText(SETTINGS_BUTTON);
                 createSettingsKeyboard(message);
-            } else if (GET_INFO_BUTTON.equals(messageText)) {
+            }
+            else if (GET_INFO_BUTTON.equals(messageText)) {
                 message.setText(MessageUserInfo.showInfo(settingsUserDto));
                 createStartKeyboard(message);
-            } else if (Arrays.stream(NotificationTime.values())
-                    .anyMatch(element -> Objects.equals(element.getValue(), messageText))) {
+            }
+            else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(),
+                                                                                  messageText))){
                 settingsUserDto.setNotificationTime(NotificationTime.getByValue(messageText));
                 UserSettings.saveUserSettings(settingsUserDto);
                 message.setText("Обраний час сповіщень: " + messageText);
                 createDefaultKeyboard(message);
-            } else if ("Назад".equals(messageText)) {
+            }else if ("Назад".equals(messageText)) {
                 message.setText("Ви повернулися в початкове меню.");
                 createDefaultKeyboard(message);
             }
@@ -80,7 +88,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             String callBackData = update.getCallbackQuery().getData();
             String userID = update.getCallbackQuery().getMessage().getChatId().toString();
             message.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
-            settingsUserDto = UserSettings.getUserById(userID);
+            settingsUserDto = getUserById(userID);
             switch (callBackData) {
                 case GET_INFO_BUTTON:
                     message.setText(MessageUserInfo.showInfo(settingsUserDto));
@@ -133,6 +141,49 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendDailyNotificationMessage() {
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+        service.scheduleAtFixedRate(new Timer(), 0, 1, TimeUnit.MINUTES);
+    }
+
+    public class Timer implements Runnable {
+        SendMessage message = new SendMessage();
+        private boolean sendMassage = false;
+        private boolean blockSendMessage = false;
+        @Override
+        public void run() {
+            ZonedDateTime userDateTime = ZonedDateTime.now(ZoneId.systemDefault());
+            int hour = userDateTime.getHour();
+            int minute = userDateTime.getMinute();
+            if (hour >= 9 && hour <= 18) {
+                if (minute <= 1 && !sendMassage && !blockSendMessage) {
+                    sendMassage = true;
+                    blockSendMessage = true;
+                    hourly(hour);
+                }
+                if (minute > 2) blockSendMessage = false;
+            } else blockSendMessage = false;
+        }
+        private void hourly (int hour) {
+            SendMessage message = new SendMessage();
+            Set<Map.Entry<String, NotificationTime>> userByNotification = getUserByNotificationTime().entrySet();
+
+            for (Map.Entry<String, NotificationTime> allUser : userByNotification) {
+                if (hour == allUser.getValue().getIntValue()) {
+                    message.setChatId(allUser.getKey());
+                    message.setText(botAPI.MessageUserInfo.showInfo(getUserById(allUser.getKey())));
+                    try {
+                        execute(message);
+                    } catch (
+                            TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            sendMassage = false;
         }
     }
 }

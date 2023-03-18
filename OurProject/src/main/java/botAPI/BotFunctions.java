@@ -1,6 +1,6 @@
 package botAPI;
 
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
 import enums.BankName;
 import enums.Currency;
 import enums.DigitsAfterDecimalPoint;

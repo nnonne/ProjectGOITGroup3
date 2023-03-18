@@ -1,7 +1,7 @@
 package botAPI;
 
 import bankService.*;
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
 
 import java.util.List;
 import java.util.stream.Collectors;

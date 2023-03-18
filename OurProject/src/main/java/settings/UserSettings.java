@@ -1,6 +1,7 @@
-package settings;
+package Settings;
 
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
+import enums.NotificationTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -66,6 +67,15 @@ public class UserSettings {
 
     public static SettingsUserDto getUserById(String UserId) {
         return getUsersSettingsFromJson().get(UserId);
+    }
+
+    public static Map<String, NotificationTime> getUserByNotificationTime() {
+        Map<String, NotificationTime> result = new HashMap<>();
+        Set<Map.Entry<String, SettingsUserDto>> setUsers = getUsersSettingsFromJson().entrySet();
+        for (Map.Entry<String, SettingsUserDto> set : setUsers)
+            if (set.getValue().getNotificationTime() != NotificationTime.OFFNOTIFICATIONS)
+                result.put(set.getKey(), set.getValue().getNotificationTime());
+        return result;
     }
 
 }

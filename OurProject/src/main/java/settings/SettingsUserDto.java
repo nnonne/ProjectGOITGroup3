@@ -1,4 +1,4 @@
-package dto;
+package settings;
 
 import enums.BankName;
 import enums.Currency;
