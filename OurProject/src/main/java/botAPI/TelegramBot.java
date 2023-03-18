@@ -80,6 +80,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                 UserSettings.saveUserSettings(settingsUserDto);
                 message.setText("Обраний час сповіщень: " + messageText);
                 createDefaultKeyboard(message);
+            }else if ("Назад".equals(messageText)) {
+                message.setText("Ви повернулися в початкове меню.");
+                createDefaultKeyboard(message);
             }
         } else if (update.hasCallbackQuery()) {
             String callBackData = update.getCallbackQuery().getData();
