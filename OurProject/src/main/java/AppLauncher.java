@@ -12,7 +12,7 @@ public class AppLauncher {
             TelegramBot telegramBot = new TelegramBot();
             botsApi.registerBot(telegramBot);
 
-            //telegramBot.sendDailyNotificationMessage();
+            telegramBot.sendDailyNotificationMessage();
 
         } catch (TelegramApiException e) {
             e.printStackTrace();

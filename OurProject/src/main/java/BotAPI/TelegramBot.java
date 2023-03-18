@@ -143,10 +143,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public void sendDailyNotificationMessage() {
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-        service.scheduleAtFixedRate(new UserTime(), 0, 1, TimeUnit.SECONDS);
+        service.scheduleAtFixedRate(new Timer(), 0, 1, TimeUnit.MINUTES);
     }
 
-    public class UserTime implements Runnable {
+    public class Timer implements Runnable {
         SendMessage message = new SendMessage();
         private boolean sendMassage = false;
         private boolean blockSendMessage = false;
@@ -154,11 +154,9 @@ public class TelegramBot extends TelegramLongPollingBot {
         public void run() {
             ZonedDateTime userDateTime = ZonedDateTime.now(ZoneId.systemDefault());
             int hour = userDateTime.getHour();
-            int minute = userDateTime.getSecond();
+            int minute = userDateTime.getMinute();
             if (hour >= 9 && hour <= 18) {
-                System.out.println("minute = " + minute);
                 if (minute <= 1 && !sendMassage && !blockSendMessage) {
-                    System.out.println("hour = " + hour);
                     sendMassage = true;
                     blockSendMessage = true;
                     hourly(hour);
@@ -185,5 +183,4 @@ public class TelegramBot extends TelegramLongPollingBot {
             sendMassage = false;
         }
     }
-
 }
