@@ -11,9 +11,14 @@ import java.util.concurrent.TimeUnit;
 public class AppLauncher {
 
     public static void main(String[] args) {
+
         try {
             TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(new TelegramBot());
+            TelegramBot telegramBot = new TelegramBot();
+            botsApi.registerBot(telegramBot);
+
+            telegramBot.sendDailyNotificationMessage();
+
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
