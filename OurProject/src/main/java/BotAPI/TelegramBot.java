@@ -171,7 +171,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (Map.Entry<String, NotificationTime> allUser : userByNotification) {
                 if (hour == allUser.getValue().getIntValue()) {
                     message.setChatId(allUser.getKey());
-                    message.setText(MessageUserInfo.showInfo(getUserById(allUser.getKey())));
+                    message.setText(BotAPI.MessageUserInfo.showInfo(getUserById(allUser.getKey())));
                     try {
                         execute(message);
                     } catch (
