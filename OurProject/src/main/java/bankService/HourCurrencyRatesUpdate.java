@@ -1,6 +1,5 @@
 package bankService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class HourCurrencyRatesUpdate implements Runnable{
@@ -12,11 +11,9 @@ public class HourCurrencyRatesUpdate implements Runnable{
         public static List<CurrencyRateDto> currencyRateDtoNBUList;
         @Override
         public void run() {
-            if (LocalDateTime.now().toLocalTime().getMinute() == 0) {
                 currencyRateDtoMonoList = currencyRetrievalMonoService.getCurrencyRates();
                 currencyRateDtoPrivatList = currencyRetrievalPrivatService.getCurrencyRates();
                 currencyRateDtoNBUList = currencyRetrievalNBUService.getCurrencyRates();
-            }
         }
     }
 
