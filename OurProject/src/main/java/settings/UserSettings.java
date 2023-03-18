@@ -1,6 +1,6 @@
 package Settings;
 
-import dto.SettingsUserDto;
+import settings.SettingsUserDto;
 import enums.NotificationTime;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
