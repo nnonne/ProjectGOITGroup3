@@ -31,8 +31,9 @@ import static settings.UserSettings.getUserByNotificationTime;
 public class TelegramBot extends TelegramLongPollingBot {
 
     Properties property = new Properties();
-    public static final String FILE_NAME = "OurProject/src/main/resources/botsettings.properties";
+    public static final String FILE_NAME = "./src/main/resources/botsettings.properties";
     SettingsUserDto settingsUserDto;
+
     public TelegramBot() {
 
         List<BotCommand> listofCommands = new ArrayList<>();
@@ -76,82 +77,87 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         SendMessage message = new SendMessage();
         if (update.hasMessage() && update.getMessage().hasText()) {
-            ResponseMysettingsEndHelp messSettings=new ResponseMysettingsEndHelp();//TODO
-            String output= messSettings.mysettingsEndHelp(String.valueOf(update.getMessage().getText()), update.getMessage().getChatId().toString());
-            message.setText(output);//TODO
-            String userID = update.getMessage().getChatId().toString();
-            String messageText = update.getMessage().getText();
-            message.setChatId(update.getMessage().getChatId().toString());
-            settingsUserDto = getUserById(userID);
-            if (messageText.equals("/start")) {
-                settingsUserDto = pressStart(message, userID);
-            }
-            else if (SETTINGS_BUTTON.equals(messageText)) {
-                message.setText(SETTINGS_BUTTON);
-                createSettingsKeyboard(message);
-            }
-            else if (GET_INFO_BUTTON.equals(messageText)) {
-                message.setText(MessageUserInfo.showInfo(settingsUserDto));
-                createStartKeyboard(message);
-            }
-            else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(),
-                                                                                  messageText))){
-                settingsUserDto.setNotificationTime(NotificationTime.getByValue(messageText));
-                UserSettings.saveUserSettings(settingsUserDto);
-                message.setText("Обраний час сповіщень: " + messageText);
-                createDefaultKeyboard(message);
-            }else if ("Назад".equals(messageText)) {
-                message.setText("Ви повернулися в початкове меню.");
-                createDefaultKeyboard(message);
-            }
+            respondForTextMessage(update, message);
         } else if (update.hasCallbackQuery()) {
-            String callBackData = update.getCallbackQuery().getData();
-            String userID = update.getCallbackQuery().getMessage().getChatId().toString();
-            message.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
-            settingsUserDto = getUserById(userID);
-            switch (callBackData) {
-                case GET_INFO_BUTTON:
-                    message.setText(MessageUserInfo.showInfo(settingsUserDto));
-                    createStartKeyboard(message);
-                    break;
-                case SETTINGS_BUTTON:
-                    message.setText(SETTINGS_BUTTON);
-                    createSettingsKeyboard(message);
-                    break;
-                case DIGITS_AFTER_DECIMAL_POINT_BUTTON:
-                    message.setText(DIGITS_AFTER_DECIMAL_POINT_BUTTON);
-                    message.setReplyMarkup(createDigitsKeyboard(settingsUserDto));
-                    break;
-                case TWO_DIGITS_BUTTON:
-                case THREE_DIGITS_BUTTON:
-                case FOUR_DIGITS_BUTTON:
-                case NBU_BUTTON:
-                case PRIVATBANK_BUTTON:
-                case MONOBANK_BUTTON:
-                case USD_BUTTON:
-                case EUR_BUTTON:
-                case "✅ " + EUR_BUTTON:
-                case "✅ " + USD_BUTTON:
-                    executeChangedMessage(placeCheckMark(callBackData, update, settingsUserDto));
-                    break;
-                case BANK_BUTTON:
-                    message.setText(BANK_BUTTON);
-                    message.setReplyMarkup(createBankKeyboard(settingsUserDto));
-                    break;
-                case CURRENCY_RATE_BUTTON:
-                    message.setText(CURRENCY_RATE_BUTTON);
-                    createCurrencyKeyboard(message, settingsUserDto);
-                    break;
-                case NOTIFICATION_TIME_BUTTON:
-                    pressNotificationTime(message, settingsUserDto);
-                    break;
-            }
+            respondForCallbackQuery(update, message);
         }
         try {
             execute(message);
         } catch (
                 TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void respondForCallbackQuery(Update update, SendMessage message) {
+        String callBackData = update.getCallbackQuery().getData();
+        String userID = update.getCallbackQuery().getMessage().getChatId().toString();
+        message.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
+        settingsUserDto = getUserById(userID);
+        handlePressedButton(update, message, callBackData);
+    }
+
+    private void handlePressedButton(Update update, SendMessage message, String callBackData) {
+        if (GET_INFO_BUTTON.equals(callBackData)) {
+            message.setText(MessageUserInfo.showInfo(settingsUserDto));
+            createStartKeyboard(message);
+        } else if (SETTINGS_BUTTON.equals(callBackData)) {
+            message.setText(SETTINGS_BUTTON);
+            createSettingsKeyboard(message);
+        } else if (DIGITS_AFTER_DECIMAL_POINT_BUTTON.equals(callBackData)) {
+            message.setText(DIGITS_AFTER_DECIMAL_POINT_BUTTON);
+            message.setReplyMarkup(createDigitsKeyboard(settingsUserDto));
+        } else if (TWO_DIGITS_BUTTON.equals(callBackData) ||
+                THREE_DIGITS_BUTTON.equals(callBackData) ||
+                FOUR_DIGITS_BUTTON.equals(callBackData) ||
+                NBU_BUTTON.equals(callBackData) ||
+                PRIVATBANK_BUTTON.equals(callBackData) ||
+                MONOBANK_BUTTON.equals(callBackData) ||
+                USD_BUTTON.equals(callBackData) ||
+                EUR_BUTTON.equals(callBackData) ||
+                ("✅ " + EUR_BUTTON).equals(callBackData) ||
+                ("✅ " + USD_BUTTON).equals(callBackData)) {
+            executeChangedMessage(placeCheckMark(callBackData, update, settingsUserDto));
+        } else if (BANK_BUTTON.equals(callBackData)) {
+            message.setText(BANK_BUTTON);
+            message.setReplyMarkup(createBankKeyboard(settingsUserDto));
+        } else if (CURRENCY_RATE_BUTTON.equals(callBackData)) {
+            message.setText(CURRENCY_RATE_BUTTON);
+            createCurrencyKeyboard(message, settingsUserDto);
+        } else if (NOTIFICATION_TIME_BUTTON.equals(callBackData)) {
+            pressNotificationTime(message, settingsUserDto);
+        }
+    }
+
+    private void respondForTextMessage(Update update, SendMessage message) {
+        ResponseMysettingsEndHelp messSettings = new ResponseMysettingsEndHelp();
+        String userID = update.getMessage().getChatId().toString();
+        String messageText = update.getMessage().getText();
+        String output = messSettings.mysettingsEndHelp(messageText, userID);
+        message.setText(output);
+        message.setChatId(update.getMessage().getChatId().toString());
+        settingsUserDto = getUserById(userID);
+        handleReceivedText(message, userID, messageText);
+    }
+
+    private void handleReceivedText(SendMessage message, String userID, String messageText) {
+        if (messageText.equals("/start")) {
+            settingsUserDto = pressStart(message, userID);
+        } else if (SETTINGS_BUTTON.equals(messageText)) {
+            message.setText(SETTINGS_BUTTON);
+            createSettingsKeyboard(message);
+        } else if (GET_INFO_BUTTON.equals(messageText)) {
+            message.setText(MessageUserInfo.showInfo(settingsUserDto));
+            createStartKeyboard(message);
+        } else if (Arrays.stream(NotificationTime.values()).anyMatch(element -> Objects.equals(element.getValue(),
+                messageText))) {
+            settingsUserDto.setNotificationTime(NotificationTime.getByValue(messageText));
+            UserSettings.saveUserSettings(settingsUserDto);
+            message.setText("Обраний час сповіщень: " + messageText);
+            createDefaultKeyboard(message);
+        } else if ("Назад".equals(messageText)) {
+            message.setText("Ви повернулися в початкове меню.");
+            createDefaultKeyboard(message);
         }
     }
 
@@ -173,6 +179,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         SendMessage message = new SendMessage();
         private boolean sendMassage = false;
         private boolean blockSendMessage = false;
+
         @Override
         public void run() {
             ZonedDateTime userDateTime = ZonedDateTime.now(ZoneId.systemDefault());
@@ -187,7 +194,8 @@ public class TelegramBot extends TelegramLongPollingBot {
                 if (minute > 2) blockSendMessage = false;
             } else blockSendMessage = false;
         }
-        private void hourly (int hour) {
+
+        private void hourly(int hour) {
             SendMessage message = new SendMessage();
             Set<Map.Entry<String, NotificationTime>> userByNotification = getUserByNotificationTime().entrySet();
 
