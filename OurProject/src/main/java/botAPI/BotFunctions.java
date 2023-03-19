@@ -1,11 +1,10 @@
 package botAPI;
 
-import settings.SettingsUserDto;
+import settings.*;
 import enums.BankName;
 import enums.Currency;
 import enums.DigitsAfterDecimalPoint;
 import enums.NotificationTime;
-import settings.UserSettings;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageReplyMarkup;
 import org.telegram.telegrambots.meta.api.objects.Update;
