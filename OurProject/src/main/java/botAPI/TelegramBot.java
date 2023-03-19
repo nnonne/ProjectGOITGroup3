@@ -1,5 +1,8 @@
 package botAPI;
 
+import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
+import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
 import settings.SettingsUserDto;
 import enums.NotificationTime;
 import settings.UserSettings;
@@ -30,6 +33,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     Properties property = new Properties();
     public static final String FILE_NAME = "OurProject/src/main/resources/botsettings.properties";
     SettingsUserDto settingsUserDto;
+    public TelegramBot() {
+
+        List<BotCommand> listofCommands = new ArrayList<>();
+        listofCommands.add(new BotCommand("/start", "Початок роботи з MyFirstBot"));
+        listofCommands.add(new BotCommand("/help", "Допомога в орієнтації по MyFirstBot"));
+        listofCommands.add(new BotCommand("/mysettings", "Настройки користувача"));
+
+        try {
+            this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
+        } catch (TelegramApiException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     @Override
     public String getBotUsername() {
@@ -59,6 +76,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         SendMessage message = new SendMessage();
         if (update.hasMessage() && update.getMessage().hasText()) {
+            ResponseMysettingsEndHelp messSettings=new ResponseMysettingsEndHelp();//TODO
+            String output= messSettings.mysettingsEndHelp(String.valueOf(update.getMessage().getText()), update.getMessage().getChatId().toString());
+            message.setText(output);//TODO
             String userID = update.getMessage().getChatId().toString();
             String messageText = update.getMessage().getText();
             message.setChatId(update.getMessage().getChatId().toString());
