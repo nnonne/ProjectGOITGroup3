@@ -9,6 +9,7 @@ public class HourCurrencyRatesUpdate implements Runnable{
         public static List<CurrencyRateDto> currencyRateDtoMonoList;
         public static List<CurrencyRateDto> currencyRateDtoPrivatList;
         public static List<CurrencyRateDto> currencyRateDtoNBUList;
+
         @Override
         public void run() {
                 currencyRateDtoMonoList = currencyRetrievalMonoService.getCurrencyRates();

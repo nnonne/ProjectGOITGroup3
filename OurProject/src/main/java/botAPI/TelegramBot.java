@@ -1,5 +1,6 @@
 package botAPI;
 
+import bankService.HourCurrencyRatesUpdate;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
@@ -167,6 +168,11 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void sendDailyNotificationMessage() {
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
         service.scheduleAtFixedRate(new Timer(), 0, 1, TimeUnit.MINUTES);
+    }
+
+    public void currencyUpdate(){
+        ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
+        service.scheduleAtFixedRate(new HourCurrencyRatesUpdate(), 0, 5, TimeUnit.MINUTES);
     }
 
     public class Timer implements Runnable {

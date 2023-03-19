@@ -1,6 +1,8 @@
 package botAPI;
 
 import bankService.*;
+import enums.BankName;
+import enums.DigitsAfterDecimalPoint;
 import settings.SettingsUserDto;
 
 import java.util.List;
@@ -8,38 +10,11 @@ import java.util.stream.Collectors;
 
 public class MessageUserInfo {
     private static String RESPONSE_TEMPLATE = "Курс в банку: cur1/UAH\n Покупка: покуп\n Продажа: прод\n";
-
+    private static List<CurrencyRateDto> currencyRateDtoList;
     public static String showInfo(SettingsUserDto settingsUserDto) {
-        String bankName;
-        List<CurrencyRateDto> currencyRateDtoList;
-        switch (String.valueOf(settingsUserDto.getBankName())) {
-            case "NBU":
-                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoNBUList;
-                bankName = "НБУ";
-                break;
-            case "MONOBANK":
-                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoMonoList;
-                bankName = "MonoBank";
-                break;
-            case "PRIVATBANK":
-            default:
-                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoPrivatList;
-                bankName = "PrivatBank";
-                break;
-        }
         String res;
-        String formatDecimalPoint;
-        switch (settingsUserDto.getDecimalPoint()){
-            case TWO:
-                formatDecimalPoint= "%.2f";
-                break;
-            case THREE:
-                formatDecimalPoint = "%.3f";
-                break;
-            case FOUR:
-            default:
-                formatDecimalPoint = "%.4f";
-        }
+        String bankName = formatBankName(settingsUserDto.getBankName());
+        String formatDecimalPoint = formatDecimalPoint(settingsUserDto.getDecimalPoint());
         res = currencyRateDtoList.stream()
                 .filter(item -> settingsUserDto.getCurrency().contains(item.getCurrency()))
                 .map(item -> RESPONSE_TEMPLATE
@@ -49,5 +24,32 @@ public class MessageUserInfo {
                         .replace("банку", bankName))
                 .collect(Collectors.joining());
         return res;
+    }
+
+    private static String formatDecimalPoint(DigitsAfterDecimalPoint digitsAfterDecimalPoint){
+        switch (digitsAfterDecimalPoint){
+            case TWO:
+                return "%.2f";
+            case THREE:
+                return "%.3f";
+            case FOUR:
+            default:
+                return "%.4f";
+        }
+    }
+
+    private static String formatBankName(BankName bankName){
+        switch (String.valueOf(bankName)) {
+            case "NBU":
+                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoNBUList;
+                return "НБУ";
+            case "MONOBANK":
+                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoMonoList;
+                return "MonoBank";
+            case "PRIVATBANK":
+            default:
+                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoPrivatList;
+                return "PrivatBank";
+        }
     }
 }
