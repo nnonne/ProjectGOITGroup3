@@ -134,7 +134,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         ResponseMysettingsAndHelp messSettings = new ResponseMysettingsAndHelp();
         String userID = update.getMessage().getChatId().toString();
         String messageText = update.getMessage().getText();
-        String output = messSettings.mysettingsEndHelp(messageText, userID);
+        String output = messSettings.mysettingsAndHelp(messageText, userID);
         message.setText(output);
         message.setChatId(update.getMessage().getChatId().toString());
         settingsUserDto = getUserById(userID);

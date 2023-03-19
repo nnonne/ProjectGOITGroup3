@@ -3,6 +3,7 @@ package botAPI;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import settings.SettingsUserDto;
+import settings.UserSettings;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -12,30 +13,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ResponseMysettingsAndHelp {
-    public String mysettingsEndHelp(String textMessage, String id) {
-        List<SettingsUserDto> jsonUserlist = new ArrayList<>();
-        try (BufferedReader buff = new BufferedReader(new FileReader("src/main/resources/users.json"))) {
-            jsonUserlist = new Gson().fromJson(buff, new TypeToken<List<SettingsUserDto>>() {}.getType());
+    public String mysettingsAndHelp(String textMessage, String id) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Map<String, SettingsUserDto> map = new HashMap<>();
-        if (jsonUserlist != null) {
+        SettingsUserDto settingsUser = UserSettings.getUserById(id);
 
-            for (SettingsUserDto element : jsonUserlist) {
-                if (element.getIdUser().equals(id))
-                    map.put(element.getIdUser(), element);
-            }
-        }
         String responseMysettings = "";
         if (textMessage.equals("/mysettings")) {
             responseMysettings = "Якщо необхідно отримати додаткову інформацію з приводу налаштувань напишіть: /help "+"\n"
                     +"Ваші налаштування:"+"\n"
-                    +"Банк: "+map.get(id).getBankName()+"\n"
-                    +"Валюта: "+map.get(id).getCurrency()+"\n"
-                    +"Кількість знаків після коми: "+map.get(id).getDecimalPoint().getValue()+"\n"
-                    +"Час сповіщення: "+map.get(id).getNotificationTime().getValue()+"\n";
+                    +"Банк: "+ settingsUser.getBankName()+"\n"
+                    +"Валюта: "+ settingsUser.getCurrency()+"\n"
+                    +"Кількість знаків після коми: "+ settingsUser.getDecimalPoint().getValue()+"\n"
+                    +"Час сповіщення: "+ settingsUser.getNotificationTime().getValue()+"\n";
         }
         else if (textMessage.equals("/help")) {
             responseMysettings =
