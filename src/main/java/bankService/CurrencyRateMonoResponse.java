@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class CurrencyRateMonoResponseDto {
+public class CurrencyRateMonoResponse {
     private int currencyCodeA;
     private int currencyCodeB;
     private BigDecimal rateSell;

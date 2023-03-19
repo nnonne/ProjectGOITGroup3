@@ -6,15 +6,15 @@ public class HourCurrencyRatesUpdate implements Runnable{
         public static CurrencyRetrievalNBUService currencyRetrievalNBUService = new CurrencyRetrievalNBUService();
         public static CurrencyRetrievalMonoService currencyRetrievalMonoService = new CurrencyRetrievalMonoService();
         public static CurrencyRetrievalPrivatService currencyRetrievalPrivatService = new CurrencyRetrievalPrivatService();
-        public static List<CurrencyRateDto> currencyRateDtoMonoList;
-        public static List<CurrencyRateDto> currencyRateDtoPrivatList;
-        public static List<CurrencyRateDto> currencyRateDtoNBUList;
+        public static List<CurrencyRate> currencyRateMonoList;
+        public static List<CurrencyRate> currencyRatePrivatList;
+        public static List<CurrencyRate> currencyRateNBUList;
 
         @Override
         public void run() {
-                currencyRateDtoMonoList = currencyRetrievalMonoService.getCurrencyRates();
-                currencyRateDtoPrivatList = currencyRetrievalPrivatService.getCurrencyRates();
-                currencyRateDtoNBUList = currencyRetrievalNBUService.getCurrencyRates();
+                currencyRateMonoList = currencyRetrievalMonoService.getCurrencyRates();
+                currencyRatePrivatList = currencyRetrievalPrivatService.getCurrencyRates();
+                currencyRateNBUList = currencyRetrievalNBUService.getCurrencyRates();
         }
     }
 

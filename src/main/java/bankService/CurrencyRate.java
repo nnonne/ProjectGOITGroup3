@@ -10,13 +10,13 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CurrencyRateDto {
+public class CurrencyRate {
     private enums.BankName bankName;
     private enums.Currency currency;
     private BigDecimal buyRate;
     private BigDecimal sellRate;
 
-    public CurrencyRateDto(BankName bankName, int currencyCodeA, BigDecimal rateBuy, BigDecimal rateSell) {
+    public CurrencyRate(BankName bankName, int currencyCodeA, BigDecimal rateBuy, BigDecimal rateSell) {
         this.bankName = bankName;
         switch (currencyCodeA){
             case 840:
@@ -33,7 +33,7 @@ public class CurrencyRateDto {
         sellRate = rateSell;
     }
 
-    public CurrencyRateDto(BankName bankName, int currency, BigDecimal sellRate) {
+    public CurrencyRate(BankName bankName, int currency, BigDecimal sellRate) {
         this.bankName = bankName;
         switch (currency){
             case 840:

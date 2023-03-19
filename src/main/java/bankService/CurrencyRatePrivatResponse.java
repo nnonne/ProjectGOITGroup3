@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
-public class CurrencyRatePrivatResponseDto {
+public class CurrencyRatePrivatResponse {
     private Currency ccy;
     private Currency base_ccy;
     private BigDecimal buy;

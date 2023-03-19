@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ResponseMysettingsEndHelp {
+public class ResponseMysettingsAndHelp {
     public String mysettingsEndHelp(String textMessage, String id) {
         List<SettingsUserDto> jsonUserlist = new ArrayList<>();
-        try (BufferedReader buff = new BufferedReader(new FileReader("OurProject/src/main/resources/users.json"))) {
+        try (BufferedReader buff = new BufferedReader(new FileReader("src/main/resources/users.json"))) {
             jsonUserlist = new Gson().fromJson(buff, new TypeToken<List<SettingsUserDto>>() {}.getType());
 
         } catch (Exception e) {

@@ -14,12 +14,12 @@ public class CurrencyRetrievalNBUService implements CurrencyRetrievalService {
 
     private static final String URL = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
     @Override
-    public List<CurrencyRateDto> getCurrencyRates() {
+    public List<CurrencyRate> getCurrencyRates() {
         try {
             String response = Jsoup.connect(URL).ignoreContentType(true).get().body().text();
-            List<CurrencyRateNBUResponseDto> responseDtos = convertResponseToList(response);
+            List<CurrencyRateNBUResponse> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
-                    .map(dto -> new CurrencyRateDto(BankName.NBU,dto.getR030(), dto.getRate()))
+                    .map(dto -> new CurrencyRate(BankName.NBU,dto.getR030(), dto.getRate()))
                     .filter(dto ->  Currency.UNKNOWN != dto.getCurrency() )
                     .collect(Collectors.toList());
         } catch (IOException e) {
@@ -27,8 +27,8 @@ public class CurrencyRetrievalNBUService implements CurrencyRetrievalService {
         }
     }
 
-    private List<CurrencyRateNBUResponseDto> convertResponseToList(String response) {
-        Type type = TypeToken.getParameterized(List.class, CurrencyRateNBUResponseDto.class).getType();
+    private List<CurrencyRateNBUResponse> convertResponseToList(String response) {
+        Type type = TypeToken.getParameterized(List.class, CurrencyRateNBUResponse.class).getType();
         Gson gson = new Gson();
         return gson.fromJson(response, type);
     }

@@ -14,12 +14,12 @@ public class CurrencyRetrievalPrivatService implements CurrencyRetrievalService 
 
     private static final String URL = "https://api.privatbank.ua/p24api/pubinfo?exchange&coursid=11";
     @Override
-    public List<CurrencyRateDto> getCurrencyRates() {
+    public List<CurrencyRate> getCurrencyRates() {
         try {
             String response = Jsoup.connect(URL).ignoreContentType(true).get().body().text();
-            List<CurrencyRatePrivatResponseDto> responseDtos = convertResponseToList(response);
+            List<CurrencyRatePrivatResponse> responseDtos = convertResponseToList(response);
             return responseDtos.stream()
-                    .map(dto -> new CurrencyRateDto(BankName.PRIVATBANK,
+                    .map(dto -> new CurrencyRate(BankName.PRIVATBANK,
                             dto.getCcy(), dto.getBuy(), dto.getSale()))
                     .filter(dto ->  Currency.UNKNOWN!=dto.getCurrency() )
                     .collect(Collectors.toList());
@@ -28,8 +28,8 @@ public class CurrencyRetrievalPrivatService implements CurrencyRetrievalService 
         }
     }
 
-    private List<CurrencyRatePrivatResponseDto> convertResponseToList(String response) {
-        Type type = TypeToken.getParameterized(List.class, CurrencyRatePrivatResponseDto.class).getType();
+    private List<CurrencyRatePrivatResponse> convertResponseToList(String response) {
+        Type type = TypeToken.getParameterized(List.class, CurrencyRatePrivatResponse.class).getType();
         Gson gson = new Gson();
         return gson.fromJson(response, type);
     }

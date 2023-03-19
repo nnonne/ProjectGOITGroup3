@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 
 public class MessageUserInfo {
     private static String RESPONSE_TEMPLATE = "Курс в банку: cur1/UAH\n Покупка: покуп\n Продажа: прод\n";
-    private static List<CurrencyRateDto> currencyRateDtoList;
+    private static List<CurrencyRate> currencyRateList;
     public static String showInfo(SettingsUserDto settingsUserDto) {
         String res;
         String bankName = formatBankName(settingsUserDto.getBankName());
         String formatDecimalPoint = formatDecimalPoint(settingsUserDto.getDecimalPoint());
-        res = currencyRateDtoList.stream()
+        res = currencyRateList.stream()
                 .filter(item -> settingsUserDto.getCurrency().contains(item.getCurrency()))
                 .map(item -> RESPONSE_TEMPLATE
                         .replace("cur1", item.getCurrency().toString())
@@ -41,14 +41,14 @@ public class MessageUserInfo {
     private static String formatBankName(BankName bankName){
         switch (String.valueOf(bankName)) {
             case "NBU":
-                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoNBUList;
+                currencyRateList = HourCurrencyRatesUpdate.currencyRateNBUList;
                 return "НБУ";
             case "MONOBANK":
-                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoMonoList;
+                currencyRateList = HourCurrencyRatesUpdate.currencyRateMonoList;
                 return "MonoBank";
             case "PRIVATBANK":
             default:
-                currencyRateDtoList = HourCurrencyRatesUpdate.currencyRateDtoPrivatList;
+                currencyRateList = HourCurrencyRatesUpdate.currencyRatePrivatList;
                 return "PrivatBank";
         }
     }

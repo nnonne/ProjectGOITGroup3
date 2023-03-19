@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 
 public class UserSettings {
-    private static final String PATH = "OurProject/src/main/resources/users.json";
+    private static final String PATH = "src/main/resources/users.json";
 
     private static File checkFileAvailability() {
         File file = new File(PATH);
