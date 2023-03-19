@@ -20,8 +20,8 @@ public class BotFunctions {
 
     public static SettingsUserDto pressStart(SendMessage message, String userID) {
         if (!UserSettings.existUserById(userID)){
-            UserSettings.saveUserSettings(new SettingsUserDto(userID, BankName.MONOBANK, List.of(Currency.EUR, Currency.USD),
-                                                              NotificationTime.ELEVEN, DigitsAfterDecimalPoint.TWO));
+            UserSettings.saveUserSettings(new SettingsUserDto(userID, BankName.MONOBANK,
+                    List.of(Currency.EUR, Currency.USD), NotificationTime.ELEVEN, DigitsAfterDecimalPoint.TWO));
         }
         SettingsUserDto settingsUserDto = UserSettings.getUserById(userID);
         message.setText("Ласкаво просимо. Цей бот допоможе Вам відслідковувати актуальні курси валют.");
@@ -34,6 +34,12 @@ public class BotFunctions {
         newMessage.setChatId(update.getCallbackQuery().getMessage().getChatId().toString());
         newMessage.setMessageId(update.getCallbackQuery().getMessage().getMessageId());
         newMessage.setInlineMessageId(update.getCallbackQuery().getInlineMessageId());
+        InlineKeyboardMarkup inlineKeyboardMarkup = getChangedInlineKeyboardMarkup(callBackData, settingsUserDto);
+        newMessage.setReplyMarkup(inlineKeyboardMarkup);
+        return newMessage;
+    }
+
+    private static InlineKeyboardMarkup getChangedInlineKeyboardMarkup(String callBackData, SettingsUserDto settingsUserDto) {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
         if (NBU_BUTTON.equals(callBackData)
                 || PRIVATBANK_BUTTON.equals(callBackData)
@@ -55,15 +61,15 @@ public class BotFunctions {
                 || ("✅ " + EUR_BUTTON).equals(callBackData)) {
             inlineKeyboardMarkup = changeCurrencyKeyboard(callBackData, settingsUserDto);
         }
-        newMessage.setReplyMarkup(inlineKeyboardMarkup);
-        return newMessage;
+        return inlineKeyboardMarkup;
     }
 
     public static void pressNotificationTime(SendMessage message, SettingsUserDto settingsUserDto) {
         String notificationTime = settingsUserDto.getNotificationTime().getValue();
         if (notificationTime.equals("Вимкнути повідомлення")) {
             message.setText("Наразі опція отримання повідомлень вимкнена. " +
-                    "Якщо Ви бажаєте отримувати повідомлення у визначений час, будь ласка, оберіть час на клавіатурі.");
+                    "Якщо Ви бажаєте отримувати повідомлення у визначений час, " +
+                    "будь ласка, оберіть час на клавіатурі.");
             createNotificationTimeKeyboard(message);
         } else {
             message.setText("Обраний час сповіщення: о " + notificationTime +
