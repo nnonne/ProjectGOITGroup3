@@ -69,7 +69,7 @@ public class BotFunctions {
         if (notificationTime.equals("Вимкнути повідомлення")) {
             message.setText("Наразі опція отримання повідомлень вимкнена. " +
                     "Якщо Ви бажаєте отримувати повідомлення у визначений час, " +
-                    "будь ласка, оберіть час на клавіатурі.");
+                    "будь ласка, оберіть його на клавіатурі.");
             createNotificationTimeKeyboard(message);
         } else {
             message.setText("Обраний час сповіщення: о " + notificationTime +

@@ -40,7 +40,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         List<BotCommand> listofCommands = new ArrayList<>();
         listofCommands.add(new BotCommand("/start", "Початок роботи з MyFirstBot"));
         listofCommands.add(new BotCommand("/help", "Допомога в орієнтації по MyFirstBot"));
-        listofCommands.add(new BotCommand("/mysettings", "Настройки користувача"));
+        listofCommands.add(new BotCommand("/mysettings", "Подивитись свої налаштування"));
 
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
