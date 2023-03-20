@@ -1,4 +1,4 @@
-package botAPI;
+package botapi;
 
 import settings.*;
 import enums.BankName;
@@ -12,9 +12,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 import java.util.List;
 
-import static botAPI.Buttons.*;
-import static botAPI.Buttons.EUR_BUTTON;
-import static botAPI.Keyboards.*;
+import static botapi.Buttons.*;
+import static botapi.Buttons.EUR_BUTTON;
+import static botapi.Keyboards.*;
 
 public class BotFunctions {
 

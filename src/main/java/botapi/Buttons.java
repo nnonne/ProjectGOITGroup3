@@ -1,4 +1,4 @@
-package botAPI;
+package botapi;
 
 public class Buttons {
     public static final String GET_INFO_BUTTON = "Отримати інфо";

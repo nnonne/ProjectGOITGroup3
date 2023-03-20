@@ -1,16 +1,8 @@
-package botAPI;
+package botapi;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import settings.SettingsUserDto;
 import settings.UserSettings;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class ResponseMysettingsAndHelp {
     public String mysettingsAndHelp(String textMessage, String id) {
@@ -33,7 +25,7 @@ public class ResponseMysettingsAndHelp {
                             "3. Для отримання інформацій про валюту, необхідно вибрати (Налаштування ->Валюти);\n"+
                             "4. Для отримання інформацій про час сповіщення, необхідно вибрати (Налаштування ->Час сповіщень).\n";
         }
-        else if (!textMessage.equals("/help") || !textMessage.equals("/mysettings") || !textMessage.equals("/start")) {
+        else {
             responseMysettings = "Невірна команда, виберіть одну з команд або зайдить в меню.\n" +
                     "Список доступних команд:\n" +
                     "/help \n"+

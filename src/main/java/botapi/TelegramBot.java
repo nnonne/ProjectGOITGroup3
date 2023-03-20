@@ -1,6 +1,6 @@
-package botAPI;
+package botapi;
 
-import bankService.HourCurrencyRatesUpdate;
+import bankservice.HourCurrencyRatesUpdate;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
 import org.telegram.telegrambots.meta.api.objects.commands.scope.BotCommandScopeDefault;
@@ -23,9 +23,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static botAPI.BotFunctions.*;
-import static botAPI.Buttons.*;
-import static botAPI.Keyboards.*;
+import static botapi.BotFunctions.*;
+import static botapi.Buttons.*;
+import static botapi.Keyboards.*;
 import static settings.UserSettings.getUserById;
 import static settings.UserSettings.getUserByNotificationTime;
 
@@ -208,7 +208,7 @@ public class TelegramBot extends TelegramLongPollingBot {
             for (Map.Entry<String, NotificationTime> allUser : userByNotification) {
                 if (hour == allUser.getValue().getIntValue()) {
                     message.setChatId(allUser.getKey());
-                    message.setText(botAPI.MessageUserInfo.showInfo(getUserById(allUser.getKey())));
+                    message.setText(botapi.MessageUserInfo.showInfo(getUserById(allUser.getKey())));
                     try {
                         execute(message);
                     } catch (

@@ -1,4 +1,4 @@
-package botAPI;
+package botapi;
 
 import settings.*;
 import enums.Currency;
@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import java.util.ArrayList;
 import java.util.List;
 
-import static botAPI.Buttons.*;
+import static botapi.Buttons.*;
 
 public class Keyboards {
 

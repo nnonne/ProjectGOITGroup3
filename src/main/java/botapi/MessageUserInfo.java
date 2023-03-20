@@ -1,6 +1,6 @@
-package botAPI;
+package botapi;
 
-import bankService.*;
+import bankservice.*;
 import enums.BankName;
 import enums.DigitsAfterDecimalPoint;
 import settings.SettingsUserDto;
@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class MessageUserInfo {
-    private static String RESPONSE_TEMPLATE = "Курс в банку: cur1/UAH\n Покупка: покуп\n Продажа: прод\n";
+    private static final String RESPONSE_TEMPLATE = "Курс в банку: cur1/UAH\n Покупка: покуп\n Продажа: прод\n";
     private static List<CurrencyRate> currencyRateList;
     public static String showInfo(SettingsUserDto settingsUserDto) {
         String res;

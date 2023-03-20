@@ -1,4 +1,4 @@
-package bankService;
+package bankservice;
 
 import java.util.List;
 
